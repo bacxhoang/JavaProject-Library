@@ -9,11 +9,10 @@
 
 ## Module
 - OOP-Java - Computer Sciences Major - Vietnamese German University
-Computer Sciences Major
 
 
 ## **Project Background**
 
-- This project is conducted as a fulfillment for the course &quot;Computer Science Project&quot;, which is instructed by Assoc. Prof. Dr. Manuel Clavel.
+- This project is conducted as a fulfillment for the course &quot;OOP-Java&quot;, which is instructed by Dr. Tran Hong Ngoc
 
-- The goal of this project is to develop a web application for creating, editing, and reading books.
+- The goal of this project is to develop an application to manage(add,search,delete) a Library.
