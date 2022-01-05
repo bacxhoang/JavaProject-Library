@@ -32,7 +32,6 @@ CREATE TABLE IF NOT EXISTS Book (
  Staff_Id INT NOT NULL,
  User_Name VARCHAR(30) NOT NULL,
  Login_Password VARCHAR(16) NOT NULL,
- isAdmin BOOLEAN,
  
  PRIMARY KEY (Staff_Id),
  CONSTRAINT Username_Unique UNIQUE (User_Name)
