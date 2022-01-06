@@ -95,8 +95,6 @@ public class UserRegistration extends JFrame {
         passwordField.setBounds(214, 235, 228, 50);
         contentPane.add(passwordField);
         
-        
-        
         btnNewButton = new JButton("Register");
         btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 22));
         btnNewButton.setBounds(399, 447, 259, 74);
@@ -127,7 +125,7 @@ public class UserRegistration extends JFrame {
                  try {
                     Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/librarymanagementsystem", "root", "123456");
                     String query = "INSERT INTO Staff values('"+ staffID + "','" + userName + "','" + password + "')";
-                    if(String.valueOf(passwordField.getPassword()) != String.valueOf(repasswordField.getPassword())) {
+                    if(!String.valueOf(passwordField.getPassword()).equals(String.valueOf(repasswordField.getPassword()))) {
                     	JOptionPane.showMessageDialog(btnNewButton, "Password not match, please retype your password");
                     }
                     else {

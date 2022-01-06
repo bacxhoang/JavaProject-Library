@@ -1,4 +1,4 @@
-package librarymanagement.api;
+package librarymanagement.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
