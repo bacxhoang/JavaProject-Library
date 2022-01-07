@@ -1,5 +1,5 @@
 package librarymanagement.resource;
 
-public class Category {
+public class Category extends Resource {
 
 }

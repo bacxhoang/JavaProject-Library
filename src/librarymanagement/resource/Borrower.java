@@ -1,5 +1,5 @@
 package librarymanagement.resource;
 
-public class Borrower {
+public class Borrower extends Resource {
 
 }

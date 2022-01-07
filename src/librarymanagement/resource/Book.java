@@ -1,5 +1,5 @@
 package librarymanagement.resource;
 
-public class Book {
+public class Book extends Resource {
 
 }

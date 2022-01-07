@@ -1,5 +1,5 @@
 package librarymanagement.resource;
 
-public class Author {
+public class Author extends Resource {
 
 }

@@ -1,5 +1,7 @@
 package librarymanagement.database;
 
-public class SQLCustomException {
+import java.sql.SQLException;
+public class SQLCustomException extends SQLException {
+	
 
 }

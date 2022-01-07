@@ -1,5 +1,5 @@
 package librarymanagement.resource;
 
-public class Staff {
+public class Staff extends Resource {
 
 }

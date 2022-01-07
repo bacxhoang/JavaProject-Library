@@ -1,5 +1,8 @@
 package librarymanagement.api;
 
-public class ResourceApi {
+import librarymanagement.database.SQLCustomException;
+public class ResourceApi extends Api{
+	
+
 
 }
