@@ -1,21 +1,25 @@
 
  
  CREATE TABLE IF NOT EXISTS Author (
-	Author_Id INT AUTO_INCREMENT NOT NULL,
+ 	Author_PK INT AUTO_INCREMENT NOT NULL,
+	Author_Id INT,
     Author_Name VARCHAR(50) NOT NULL,
     
-    PRIMARY KEY (Author_Id)
+    PRIMARY KEY (Author_PK),
+    CONSTRAINT Author_Id_unique UNIQUE (Author_Id)
 );
 
  CREATE TABLE IF NOT EXISTS Category (
-	Cat_Id INT AUTO_INCREMENT NOT NULL,
+ 	Cat_PK INT AUTO_INCREMENT NOT NULL,
+	Cat_Id INT,
     Cat_Name VARCHAR(50) NOT NULL,
     
-    PRIMARY KEY (Cat_Id)
+    PRIMARY KEY (Cat_PK),
+    CONSTRAINT Category_Id_unique UNIQUE (Cat_Id)
 );
 
 CREATE TABLE IF NOT EXISTS Book (
-  Book_Id INT AUTO_INCREMENT NOT NULL,
+  Book_PK INT AUTO_INCREMENT NOT NULL,
   ISBN INT NOT NULL,
   Title VARCHAR(100),
   Book_language VARCHAR(20),
@@ -24,17 +28,17 @@ CREATE TABLE IF NOT EXISTS Book (
   No_Copy_Actual INT,
   No_Copy_Current INT,
   
-  PRIMARY KEY (Book_Id),
+  PRIMARY KEY (Book_PK),
   CONSTRAINT ISBN_unique UNIQUE (ISBN),
-  FOREIGN KEY (Category_Id) REFERENCES Category (Cat_Id),
-  FOREIGN KEY (Author_Id) REFERENCES Author (Author_Id)
+  FOREIGN KEY (Category_Id) REFERENCES Category (Cat_PK),
+  FOREIGN KEY (Author_Id) REFERENCES Author (Author_PK)
 );
 
  CREATE TABLE IF NOT EXISTS Staff (
  Staff_PK INT AUTO_INCREMENT NOT NULL,
  Staff_Id INT NOT NULL,
  User_Name VARCHAR(30) NOT NULL,
- Login_Password VARCHAR(16) NOT NULL,
+ Login_Password VARCHAR(50) NOT NULL,
  
  PRIMARY KEY (Staff_PK),
  CONSTRAINT StaffId_Unique UNIQUE (Staff_Id),
@@ -47,12 +51,12 @@ CREATE TABLE IF NOT EXISTS Borrower (
     Book_Id INT NOT NULL,
     Borrowed_from TIME,
     Borrowed_to TIME,
-    Returned_date TIME,
+    Returned_date DATE,
     Issued_by INT,
     
     PRIMARY KEY (Borrower_PK),
 	CONSTRAINT BorrowerId_Unique UNIQUE (Borrower_Id),
-    FOREIGN KEY (Book_Id) REFERENCES Book (Book_Id) ON DELETE CASCADE,
+    FOREIGN KEY (Book_Id) REFERENCES Book (Book_PK) ON DELETE CASCADE,
     FOREIGN KEY (Issued_by) REFERENCES Staff (Staff_PK) ON DELETE CASCADE
 );
     
