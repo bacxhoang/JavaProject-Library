@@ -2,7 +2,7 @@
  
  CREATE TABLE IF NOT EXISTS Author (
  	Author_PK INT AUTO_INCREMENT NOT NULL,
-	Author_Id INT,
+	Author_Id INT NOT NULL,
     Author_Name VARCHAR(50) NOT NULL,
     
     PRIMARY KEY (Author_PK),
@@ -11,7 +11,7 @@
 
  CREATE TABLE IF NOT EXISTS Category (
  	Cat_PK INT AUTO_INCREMENT NOT NULL,
-	Cat_Id INT,
+	Cat_Id INT NOT NULL,
     Cat_Name VARCHAR(50) NOT NULL,
     
     PRIMARY KEY (Cat_PK),
@@ -23,10 +23,10 @@ CREATE TABLE IF NOT EXISTS Book (
   ISBN INT NOT NULL,
   Title VARCHAR(100),
   Book_language VARCHAR(20),
-  Author_Id INT,
-  Category_Id INT,
-  No_Copy_Actual INT,
-  No_Copy_Current INT,
+  Author_Id INT NOT NULL,
+  Category_Id INT NOT NULL,
+  No_Copy_Actual INT NOT NULL,
+  No_Copy_Current INT NOT NULL,
   
   PRIMARY KEY (Book_PK),
   CONSTRAINT ISBN_unique UNIQUE (ISBN),
@@ -66,8 +66,8 @@ CREATE TABLE IF NOT EXISTS Borrower (
  Student_PK INT AUTO_INCREMENT NOT NULL,
  Student_Id INT NOT NULL,
  Student_Name VARCHAR(50) NOT NULL,
- Borrower_Id INT,
- Phone_Number INT,
+ Borrower_Id INT NOT NULL,
+ Phone_Number INT NOT NULL,
  
  PRIMARY KEY (Student_PK),
  FOREIGN KEY (Borrower_Id) REFERENCES Borrower (Borrower_PK) ON DELETE CASCADE,
