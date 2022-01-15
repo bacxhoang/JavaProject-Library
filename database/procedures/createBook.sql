@@ -22,7 +22,7 @@ BEGIN CASE
     AND inTitle NOT REGEXP '[^a-zA-Z0-9]+' THEN
 		SET statusCode = 460; -- invalid input
     WHEN inISBN IN (SELECT ISBN FROM Book) THEN
-		SET statusCode = 401; -- ISBN already exists
+		SET statusCode = 412; -- ISBN already exists
 	ELSE
 		SET statusCode = 200;
 		INSERT INTO Book (ISBN,Title,Book_Language,Author_Id,Category_Id,No_Copy_Actual,No_Copy_Current)
