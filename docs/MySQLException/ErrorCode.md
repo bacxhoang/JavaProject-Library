@@ -1,0 +1,18 @@
+# Custom SQL Error Codes
+
+- 200: valid/SUCCESS
+- 401: NON-EXISTENT/INVALID Author Id
+- 402: NON-EXISTENT/INVALID ISBN
+- 403: NON-EXISTENT/INVALID Borrower Id
+- 404: NON-EXISTENT/INVALID Category Id
+- 405: NON-EXISTENT/INVALID Staff Id
+- 406: NON-EXISTENT/INVALID Student Id
+- 409: Returned Date cannot be in the future
+- 410: Username already exists
+- 411: Author Id already exists
+- 412: ISBN already exists
+- 413: Borrower Id already exists
+- 414: Category Id already exists
+- 415: Staff Id already exists
+- 416: Student Id already exists
+- 460: invalid input
