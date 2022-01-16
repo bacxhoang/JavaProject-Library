@@ -10,7 +10,7 @@ CREATE PROCEDURE createAuthor (
     OUT statusCode INT
 )
 BEGIN CASE
-	WHEN inAuthorId NOT REGEXP '[0-9]+' AND inAuthorName NOT REGEXP '[^a-zA-Z]+' THEN
+	WHEN inAuthorName NOT REGEXP '[^a-zA-Z]+' THEN
 		SET statusCode = 460; -- invalid input
     WHEN inAuthorId IN (SELECT Author_Id FROM Author) THEN
 		SET statusCode = 411; -- Author Id already exists

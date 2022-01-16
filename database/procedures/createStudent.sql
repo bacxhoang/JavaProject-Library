@@ -12,8 +12,7 @@ CREATE PROCEDURE createStudent (
     OUT statusCode INT
 )
 BEGIN CASE
-	WHEN inStudentId AND inBorrowerId NOT REGEXP '[0-9]+' 
-    AND inStudentName NOT REGEXP '[^a-zA-Z]+' THEN
+    WHEN inStudentName NOT REGEXP '[^a-zA-Z]+' THEN
 		SET statusCode = 460; -- invalid input
     WHEN inStudentId IN (SELECT Student_Id FROM Student) THEN
 		SET statusCode = 416; -- Student Id already exists

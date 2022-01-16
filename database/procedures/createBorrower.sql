@@ -16,9 +16,6 @@ CREATE PROCEDURE createBorrower (
     OUT statusCode INT
 )
 BEGIN CASE
-	WHEN inBorrowerId AND inBookId AND inIssuedBy NOT REGEXP '[0-9]+' 
-    AND inBorrowedFrom AND inBorrowedTo NOT REGEXP '^(?:(?:([01]?\d|2[0-3]):)?([0-5]?\d):)?([0-5]?\d)$' THEN
-    SET statusCode = 460; -- invalid input
     WHEN inReturnDate > CURDATE() THEN
 		SET statusCode = 409; -- Returned Date cannot be in the future
     WHEN inBorrowerId IN (SELECT Borrower_Id FROM Borrower) THEN

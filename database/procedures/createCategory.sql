@@ -10,7 +10,7 @@ CREATE PROCEDURE createCategory (
     OUT statusCode INT
 )
 BEGIN CASE
-	WHEN inCatId NOT REGEXP '[0-9]+' AND inCatName NOT REGEXP '[^a-zA-Z]+' THEN
+	WHEN inCatName REGEXP '[^a-zA-Z]+' THEN
 		SET statusCode = 460; -- invalid input
     WHEN inCatId IN (SELECT Cat_Id FROM Category) THEN
 		SET statusCode = 414; -- Category Id already exists

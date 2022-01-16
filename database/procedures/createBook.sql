@@ -17,16 +17,16 @@ CREATE PROCEDURE createBook (
     OUT statusCode INT
 )
 BEGIN CASE
-	WHEN inISBN AND inAuthorId AND inCategoryId AND inNoActual AND inNoCurrent NOT REGEXP '[0-9]+' 
-    AND inLanguage NOT REGEXP '[^a-zA-Z]+' 
-    AND inTitle NOT REGEXP '[^a-zA-Z0-9]+' THEN
+	WHEN inLanguage REGEXP '[^a-zA-Z]+'  THEN
+		SET statusCode = 460; -- invalid input
+    WHEN inTitle IS NULL THEN
 		SET statusCode = 460; -- invalid input
     WHEN inISBN IN (SELECT ISBN FROM Book) THEN
 		SET statusCode = 412; -- ISBN already exists
 	ELSE
 		SET statusCode = 200;
 		INSERT INTO Book (ISBN,Title,Book_Language,Author_Id,Category_Id,No_Copy_Actual,No_Copy_Current)
-		VALUES (inISBN,inTitle,inLanguage,inAuthorId,inCategoryId,inNoActual,inNoCurrent);
+		VALUES (inISBN,inTitle,inLanguage,(SELECT Author_PK FROM Author WHERE Author_Id = inAuthorId),(SELECT Cat_PK FROM Category WHERE Cat_Id = inCategoryId),inNoActual,inNoCurrent);
 	END CASE;
 END//
 

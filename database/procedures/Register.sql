@@ -11,8 +11,7 @@ CREATE PROCEDURE Register (
     OUT statusCode INT
 )
 BEGIN CASE
-	WHEN inStaffId NOT REGEXP '[0-9]+' 
-    AND inUsername NOT REGEXP '[^a-zA-Z0-9]+' THEN
+	WHEN inUsername REGEXP '[^a-zA-Z0-9]+' THEN
 		SET statusCode = 460; -- invalid input
     WHEN inUsername IN (SELECT User_Name FROM Staff) THEN
 		SET statusCode = 410; -- Username already exists
