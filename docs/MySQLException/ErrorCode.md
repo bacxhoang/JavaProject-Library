@@ -16,5 +16,6 @@
 - 415: Staff Id already exists
 - 416: Student Id already exists
 - 420: Book already returned
+- 421: NON-EXISTENT Borrower+Book combination
 - 460: invalid input
 - 495: Delete violation
