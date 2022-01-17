@@ -11,8 +11,10 @@
 - 410: Username already exists
 - 411: Author Id already exists
 - 412: ISBN already exists
-- 413: Borrower Id already exists
+- 413: Cannot borrow more than one copy of the same book
 - 414: Category Id already exists
 - 415: Staff Id already exists
 - 416: Student Id already exists
+- 420: Book already returned
 - 460: invalid input
+- 495: Delete violation
