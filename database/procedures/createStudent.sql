@@ -16,12 +16,10 @@ BEGIN CASE
 		SET statusCode = 460; -- invalid input
     WHEN inStudentId IN (SELECT Student_Id FROM Student) THEN
 		SET statusCode = 416; -- Student Id already exists
-	WHEN inBorrowerId NOT IN (SELECT Borrower_Id FROM Borrower) THEN
-		SET statusCode = 403; -- NON-EXISTENT/INVALID Borrower Id
 	ELSE
 		SET statusCode = 200;
 		INSERT INTO Student (Student_Id,Student_Name,Borrower_Id,Phone_Number)
-		VALUES (inStudentId,inStudentName,(SELECT Borrower_PK FROM Borrower WHERE Borrower_Id = inBorrowerId),inPhoneNumber);
+		VALUES (inStudentId,inStudentName,inBorrowerId,inPhoneNumber);
 	END CASE;
 END//
 

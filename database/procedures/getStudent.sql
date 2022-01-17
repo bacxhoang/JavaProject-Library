@@ -9,9 +9,8 @@ CREATE PROCEDURE getStudent (
 )
 BEGIN
 	SET statusCode = 200; 
-	SELECT Student_Id, Student_Name, B.Borrower_Id, Phone_Number
-	FROM Student S
-    INNER JOIN Borrower B ON S.Borrower_Id = B.Borrower_PK;
+	SELECT Student_Id, Student_Name, Borrower_Id, Phone_Number
+	FROM Student ;
 END//
 
 DELIMITER ;
