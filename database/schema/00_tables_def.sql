@@ -44,25 +44,8 @@ CREATE TABLE IF NOT EXISTS Book (
  CONSTRAINT StaffId_Unique UNIQUE (Staff_Id),
  CONSTRAINT Username_Unique UNIQUE (User_Name)
  );
-    
-CREATE TABLE IF NOT EXISTS Borrower (
-	Borrower_PK INT AUTO_INCREMENT NOT NULL,
-	Borrower_Id INT NOT NULL,
-    Book_Id INT NOT NULL,
-    Borrowed_from DATE NOT NULL,
-    Borrowed_to DATE NOT NULL,
-    Returned_date DATE DEFAULT NULL,
-    Issued_by INT NOT NULL,
-    
-    PRIMARY KEY (Borrower_PK),
-	CONSTRAINT BorrowerId_Unique UNIQUE (Borrower_Id),
-    FOREIGN KEY (Book_Id) REFERENCES Book (Book_PK) ON DELETE CASCADE,
-    FOREIGN KEY (Issued_by) REFERENCES Staff (Staff_PK) ON DELETE CASCADE
-);
-    
-
  
-  CREATE TABLE IF NOT EXISTS Student (
+CREATE TABLE IF NOT EXISTS Student (
  Student_PK INT AUTO_INCREMENT NOT NULL,
  Student_Id INT NOT NULL,
  Student_Name VARCHAR(50) NOT NULL,
@@ -70,11 +53,28 @@ CREATE TABLE IF NOT EXISTS Borrower (
  Phone_Number INT NOT NULL,
  
  PRIMARY KEY (Student_PK),
- FOREIGN KEY (Borrower_Id) REFERENCES Borrower (Borrower_PK) ON DELETE CASCADE,
  CONSTRAINT StudentId_Unique UNIQUE (Student_Id),
  CONSTRAINT Borrower_Unique UNIQUE (Borrower_Id),
  CONSTRAINT Phonenumber_Unique UNIQUE (Phone_Number)
  );
+    
+CREATE TABLE IF NOT EXISTS Borrower (
+	Borrower_PK INT AUTO_INCREMENT NOT NULL,
+	Borrower_Num INT NOT NULL,
+    Book_Id INT NOT NULL,
+    Borrowed_from DATE NOT NULL,
+    Borrowed_to DATE NOT NULL,
+    Returned_date DATE DEFAULT NULL,
+    Issued_by INT NOT NULL,
+    
+    PRIMARY KEY (Borrower_PK),
+	CONSTRAINT Borrower_Unique UNIQUE (Borrower_Num,Book_Id),
+    FOREIGN KEY (Book_Id) REFERENCES Book (Book_PK) ON DELETE CASCADE,
+    FOREIGN KEY (Issued_by) REFERENCES Staff (Staff_PK) ON DELETE CASCADE,
+    FOREIGN KEY (Borrower_Num) REFERENCES Student (Student_PK) ON DELETE CASCADE
+);
+    
+
  
  
 
