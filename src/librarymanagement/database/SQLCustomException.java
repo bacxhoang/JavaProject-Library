@@ -25,11 +25,14 @@ public class SQLCustomException extends SQLException {
 		    errors.put(410, "Username already exists");
 		    errors.put(411, "Author Id already exists");
 		    errors.put(412, "ISBN already exists");
-		    errors.put(413, "Borrower Id already exists");
+		    errors.put(413, "Cannot borrow more than one copy of the same book");
 		    errors.put(414, "Category Id already exists");
 		    errors.put(415, "Staff Id already exists");
 		    errors.put(416, "Student Id already exists");
+		    errors.put(420, "Book already returned");
+		    errors.put(421, "NON-EXISTENT Borrower+Book combination");
 		    errors.put(460, "Invalid Input");
+		    errors.put(495, "Delete Violation");
 
 		  }
 
