@@ -26,7 +26,7 @@ CALL createBook('106', 'A Christmas Carol','English','4','18','5','5', @statusCo
 -- Add into Database Students --
 CALL createStudent('1001', 'Peter Parker','10001','0123456789', @statusCode);
 CALL createStudent('1002', 'Ned Leeds','10002','1234567890', @statusCode);
-CALL createStudent('1003', 'Marry Jane','10003','1237894560', @statusCode);
+CALL createStudent('1003', 'Mary Jane','10003','1237894560', @statusCode);
 CALL createStudent('1004', 'Gwen Stacy','10004','0987654321', @statusCode);
 CALL createStudent('1005', 'Barry Allen','10005','025917782', @statusCode);
 -- Add into Database Borrowers --
