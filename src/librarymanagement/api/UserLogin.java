@@ -1,8 +1,7 @@
 package librarymanagement.api;
 
-import java.awt.EventQueue;
+
 import java.awt.Font;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
@@ -89,6 +88,7 @@ public class UserLogin{
 				String password = String.valueOf(passwordField.getPassword());
 				Connection myConn = null;
 				PreparedStatement myStmt = null;
+				ResultSet rs = null;
 		try {
 			 // Connect to database
             myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/librarymanagementsystem", "root", "123456");
@@ -96,7 +96,7 @@ public class UserLogin{
             myStmt = myConn.prepareStatement("Select User_Name, Login_Password from Staff where User_Name=? and Login_Password=?");
             myStmt.setString(1,userName);
             myStmt.setString(2, password);
-            ResultSet rs = myStmt.executeQuery();
+            rs = myStmt.executeQuery();
             if (rs.next()) {
                 UserLogin.dispose();
                 UserHome ah = new UserHome(userName);
@@ -104,6 +104,9 @@ public class UserLogin{
                 JOptionPane.showMessageDialog(btnLoginButton, "You have successfully logged in");
             } else {
                 JOptionPane.showMessageDialog(btnLoginButton, "Wrong Username & Password");
+            }
+            {
+            	myConn.close();
             }
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
