@@ -5,15 +5,23 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-
+import javax.naming.NamingException;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+
+import librarymanagement.database.SQLCustomException;
 
 import java.sql.CallableStatement;
 
@@ -25,6 +33,7 @@ public class UserRegistration{
     private JPasswordField passwordField;
     private JButton RegisterButton;
     private JButton BackButton;
+    private static final Logger logger = Logger.getLogger(UserRegistration.class.getName());
 
 	public void setVisible(boolean b) {
 		UserRegistration.setVisible(true);
@@ -101,8 +110,9 @@ public class UserRegistration{
                 String userName = username.getText();
 				String password = String.valueOf(passwordField.getPassword());
 				Connection myConn = null;
+				String register = "{call Register(?,?,?,?)}";
 				CallableStatement myStmt = null;
-				
+			
 
                 
      
@@ -112,20 +122,31 @@ public class UserRegistration{
                 	 // Connect to database
                     myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/librarymanagementsystem", "root", "123456");
                     // Prepare the stored procedure call
-                    myStmt = myConn.prepareCall("{call Register(?,?,?,?)}");
+                    myStmt = myConn.prepareCall(register);
                     // Set parameter
                     myStmt.setInt(1,staffID);
                     myStmt.setString(2,userName);
                     myStmt.setString(3,password);
+                    myStmt.registerOutParameter(4,Types.INTEGER);
                     myStmt.execute();
-                    {
-                    myConn.close();
-                    }
-                } 
-                catch (Exception exception) {
-                    exception.printStackTrace();
+                   int status = myStmt.getInt(4);
+                 if (status != 200) {
+                     throw new SQLCustomException(status);
+                   }
+                 else {
+                	 JOptionPane.showMessageDialog(RegisterButton, "You have successfully registered ");
+                	 UserRegistration.dispose();
+                	 LaunchPage launchPage = new LaunchPage();
+             		 launchPage.setVisible(true);
+                
+                 }
+
+                 } catch (SQLException ex) {
+                	 JOptionPane.showMessageDialog(RegisterButton, "Error: "+ex.toString());
+                   
+                 }
                 }
-                }
+                
            
         });
         BackButton.addActionListener(new ActionListener() {
