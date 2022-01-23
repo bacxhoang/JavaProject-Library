@@ -3,6 +3,7 @@ package librarymanagement.gui;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
@@ -38,41 +39,48 @@ public class StudentPanel extends JPanel {
 		add(lblNewLabel_3);
 		
 		
-		textField = new JTextField();
-		textField.setBounds(109, 33, 96, 19);
-		add(textField);
-		textField.setColumns(10);
+		JTextField studentIdTF = new JTextField();
+		studentIdTF.setBounds(109, 33, 96, 19);
+		add(studentIdTF);
+		studentIdTF.setColumns(10);
 		
-		textField_1 = new JTextField();
-		textField_1.setBounds(109, 69, 96, 19);
-		add(textField_1);
-		textField_1.setColumns(10);
+		JTextField studentNameTF = new JTextField();
+		studentNameTF.setBounds(109, 69, 96, 19);
+		add(studentNameTF);
+		studentNameTF.setColumns(10);
 		
-		textField_2 = new JTextField();
-		textField_2.setBounds(109, 114, 96, 19);
-		add(textField_2);
-		textField_2.setColumns(10);
+		JTextField borrowerNumberTF = new JTextField();
+		borrowerNumberTF.setBounds(109, 114, 96, 19);
+		add(borrowerNumberTF);
+		borrowerNumberTF.setColumns(10);
 		
-		textField_3 = new JTextField();
-		textField_3.setBounds(109, 162, 96, 19);
-		add(textField_3);
-		textField_3.setColumns(10);
+		JTextField phoneNumTF = new JTextField();
+		phoneNumTF.setBounds(109, 162, 96, 19);
+		add(phoneNumTF);
+		phoneNumTF.setColumns(10);
 		
-		table = new JTable();
-		table.setBounds(230, 36, 334, 292);
-		add(table);
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(244, 36, 349, 294);
+		add(scrollPane);
+		Object[][] data= {};
+		String col[] = {"Student Id", "Student Name", "Borrower Id", "Phone Number"
+		};
 		
-		JButton btnNewButton = new JButton("Add");
-		btnNewButton.setBounds(77, 362, 85, 21);
-		add(btnNewButton);
+		JTable studentPanel = new JTable(data, col);
+		studentPanel.setBounds(244, 36, 349, 294);
+		scrollPane.setViewportView(studentPanel);
 		
-		JButton btnNewButton_1 = new JButton("Update");
-		btnNewButton_1.setBounds(379, 362, 85, 21);
-		add(btnNewButton_1);
+		JButton btnAddButton = new JButton("Add");
+		btnAddButton.setBounds(77, 362, 85, 21);
+		add(btnAddButton);
 		
-		JButton btnNewButton_2 = new JButton("Delete");
-		btnNewButton_2.setBounds(230, 362, 85, 21);
-		add(btnNewButton_2);
+		JButton btnUpdateButton = new JButton("Update");
+		btnUpdateButton.setBounds(379, 362, 85, 21);
+		add(btnUpdateButton);
+		
+		JButton btnDeleteButton = new JButton("Delete");
+		btnDeleteButton.setBounds(230, 362, 85, 21);
+		add(btnDeleteButton);
 
 	}
 }

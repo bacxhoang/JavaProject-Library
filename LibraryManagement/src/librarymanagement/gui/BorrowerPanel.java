@@ -3,6 +3,7 @@ package librarymanagement.gui;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
@@ -45,51 +46,58 @@ public class BorrowerPanel extends JPanel {
 		lblNewLabel_5.setBounds(10, 263, 103, 13);
 		add(lblNewLabel_5);
 		
-		textField = new JTextField();
-		textField.setBounds(124, 33, 96, 19);
-		add(textField);
-		textField.setColumns(10);
+		JTextField borrowerNumberTF = new JTextField();
+		borrowerNumberTF.setBounds(124, 33, 96, 19);
+		add(borrowerNumberTF);
+		borrowerNumberTF.setColumns(10);
 		
-		textField_1 = new JTextField();
-		textField_1.setBounds(124, 69, 96, 19);
-		add(textField_1);
-		textField_1.setColumns(10);
+		JTextField bookIdTF = new JTextField();
+		bookIdTF.setBounds(124, 69, 96, 19);
+		add(bookIdTF);
+		bookIdTF.setColumns(10);
 		
-		textField_2 = new JTextField();
-		textField_2.setBounds(124, 114, 96, 19);
-		add(textField_2);
-		textField_2.setColumns(10);
+		JTextField borrowedFromTF = new JTextField();
+		borrowedFromTF.setBounds(124, 114, 96, 19);
+		add(borrowedFromTF);
+		borrowedFromTF.setColumns(10);
 		
-		textField_3 = new JTextField();
-		textField_3.setBounds(124, 162, 96, 19);
-		add(textField_3);
-		textField_3.setColumns(10);
+		JTextField borrowedToTF = new JTextField();
+		borrowedToTF.setBounds(124, 162, 96, 19);
+		add(borrowedToTF);
+		borrowedToTF.setColumns(10);
 		
-		textField_4 = new JTextField();
-		textField_4.setBounds(124, 209, 96, 19);
-		add(textField_4);
-		textField_4.setColumns(10);
+		JTextField returnDateTF = new JTextField();
+		returnDateTF.setBounds(124, 209, 96, 19);
+		add(returnDateTF);
+		returnDateTF.setColumns(10);
 		
-		textField_5 = new JTextField();
-		textField_5.setBounds(124, 260, 96, 19);
-		add(textField_5);
-		textField_5.setColumns(10);
+		JTextField issuedByTF = new JTextField();
+		issuedByTF.setBounds(124, 260, 96, 19);
+		add(issuedByTF);
+		issuedByTF.setColumns(10);
 		
-		table = new JTable();
-		table.setBounds(230, 36, 334, 292);
-		add(table);
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(244, 36, 349, 294);
+		add(scrollPane);
+		Object[][] data= {};
+		String col[] = {"Borrower Number","Book Id", "Borrowed From", "Borrowed To", "Return Date", "Issued By"
+		};
 		
-		JButton btnNewButton = new JButton("Add");
-		btnNewButton.setBounds(77, 362, 85, 21);
-		add(btnNewButton);
+		JTable borrowerTable = new JTable(data, col);
+		borrowerTable.setBounds(244, 36, 349, 294);
+		scrollPane.setViewportView(borrowerTable);
 		
-		JButton btnNewButton_1 = new JButton("Update");
-		btnNewButton_1.setBounds(379, 362, 85, 21);
-		add(btnNewButton_1);
+		JButton btnAddButton = new JButton("Add");
+		btnAddButton.setBounds(77, 362, 85, 21);
+		add(btnAddButton);
 		
-		JButton btnNewButton_2 = new JButton("Delete");
-		btnNewButton_2.setBounds(230, 362, 85, 21);
-		add(btnNewButton_2);
+		JButton btnUpdateButton = new JButton("Update");
+		btnUpdateButton.setBounds(379, 362, 85, 21);
+		add(btnUpdateButton);
+		
+		JButton btnDeleteButton = new JButton("Delete");
+		btnDeleteButton.setBounds(230, 362, 85, 21);
+		add(btnDeleteButton);
 
 	}
 }
