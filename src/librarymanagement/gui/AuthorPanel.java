@@ -7,22 +7,40 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.JTextField;
+import javax.swing.JLabel;
 
 class AuthorPanel extends AbstractPanel {
 	private DefaultTableModel tableModel;
 	private JPanel contentPane;
-	
+	private JTextField textField;
+	private JTextField textField_1;
+	JTable table;
 	public AuthorPanel() { 
 	super(); 
+	
+	textField = new JTextField();
+	textField.setColumns(10);
+	textField.setBounds(122, 62, 96, 19);
+	getContentPane().add(textField);
+	
+	textField_1 = new JTextField();
+	textField_1.setColumns(10);
+	textField_1.setBounds(122, 97, 96, 19);
+	getContentPane().add(textField_1);
+	
+	JLabel lblAuthorid = new JLabel("AuthorId");
+	lblAuthorid.setBounds(35, 65, 45, 13);
+	getContentPane().add(lblAuthorid);
+	
+	JLabel lblNewLabel_1 = new JLabel("AuthorName");
+	lblNewLabel_1.setBounds(35, 100, 77, 13);
+	getContentPane().add(lblNewLabel_1);
 	table = new JTable();
 	String[] columms = new String [] {"Author_Id", "Author Name"};
 	tableModel = new DefaultTableModel();
 	tableModel.setColumnIdentifiers(columms);
 	table.setModel(tableModel);
-	
-	JScrollPane scrollPane = new JScrollPane(table);
-	scrollPane.setBounds(10, 10, 546, 319);
-	add(scrollPane);
 	}
 	
 	void handleBtnRefresh(ActionEvent evt) {
@@ -46,17 +64,7 @@ class AuthorPanel extends AbstractPanel {
 	}
 
 	void handleBtnDelete(ActionEvent evt) {
-		// TODO Auto-generated method stub
-		// TODO Auto-generated method stub
-		int count = table.getRowCount();
-		if(count > 0){
-			int idx = table.getSelectedRow();
-			if (idx >= 0)
-				tableModel.removeRow(idx);
-			else
 				JOptionPane.showMessageDialog(null, "DELETE ERROR!!");
-		}
-		else
-			JOptionPane.showMessageDialog(null, "Table does not contain any records!!");
+
 	}
 }

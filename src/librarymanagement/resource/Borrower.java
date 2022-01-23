@@ -6,12 +6,12 @@ import java.sql.Date;
 public class Borrower {
 	private int borrowerId;
 	private int bookId;
-	private Time borrowedFrom;
-	private Time borrowedTo;
+	private Date borrowedFrom;
+	private Date borrowedTo;
 	private Date returnedDate;
 	private int issuedBy;
 	
-	public Borrower(int borrowerId,int bookId,Time borrowedFrom,Time borrowedTo,Date returnedDate,int issuedBy) {
+	public Borrower(int borrowerId,int bookId,Date borrowedFrom,Date borrowedTo,Date returnedDate,int issuedBy) {
 		this.borrowerId = borrowerId;
 		this.bookId = bookId;
 		this.borrowedFrom = borrowedFrom;
@@ -28,11 +28,11 @@ public class Borrower {
 		return bookId;
 	}
 
-	public Time getBorrowedFrom() {
+	public Date getBorrowedFrom() {
 		return borrowedFrom;
 	}
 
-	public Time getBorrowedTo() {
+	public Date getBorrowedTo() {
 		return borrowedTo;
 	}
 

@@ -53,7 +53,6 @@ public class GUI extends JFrame {
 		BookPanel bookPanel = new BookPanel();
 		bookPanel.table.setBounds(25, 503, 510, -468);
 		tabbedPane.addTab("Book", null, bookPanel, null);
-		bookPanel.setLayout(null);
 		
 		AuthorPanel authorPanel = new AuthorPanel();
 		tabbedPane.addTab("Author", null, authorPanel, null);
@@ -64,9 +63,6 @@ public class GUI extends JFrame {
 		
 		CategoryPanel categoryPanel = new CategoryPanel();
 		tabbedPane.addTab("Category", null, categoryPanel, null);
-		
-		StaffPanel staffPanel = new StaffPanel();
-		tabbedPane.addTab("Staff", null, staffPanel, null);
 		
 		StudentPanel studentPanel = new StudentPanel();
 		tabbedPane.addTab("Student", null, studentPanel, null);

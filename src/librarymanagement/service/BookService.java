@@ -1,18 +1,25 @@
 package librarymanagement.service;
 
 import java.sql.*;
-import java.sql.PreparedStatement;
-import librarymanagement.database.MySQLConnUtils;
+import java.util.ArrayList;
+import java.util.List;
+
 import librarymanagement.resource.*;
 
+import librarymanagement.database.*;
 public class BookService {
-
-	public void addBook(Book book) throws ClassNotFoundException, SQLException {
-		Connection db = MySQLConnUtils.getMySQLConnection();
+	private Connection connection;
+	
+	public BookService()
+	{
+		Connection connection = MyConnection.getConnection();
+	}
+	
+	public void addBook(Book book) {
+		ArrayList<Book> bookInfoAdd;
 		try {
-			String sql = "INSERT INTO BOOK VALUES(?,?,?,?,?,?,?)";
-			PreparedStatement pstm = db.prepareStatement(sql);
-
+			String sql = "INSERT TO BOOK VALUES(?,?,?,?,?,?,?)";
+			PreparedStatement pstm = connection.prepareStatement(sql);
 			ResultSet rs = pstm.executeQuery(sql);
 
 			int i = 1;
@@ -22,7 +29,7 @@ public class BookService {
 				}
 				i++;
 			}
-			pstm = db.prepareStatement(sql);
+			pstm = connection.prepareStatement(sql);
 			pstm.setInt(1, book.getIsbn());
 			pstm.setString(2, book.getTitle());
 			pstm.setString(3, book.getLanguage());
@@ -33,115 +40,32 @@ public class BookService {
 			pstm.executeUpdate();
 		} catch (SQLException e) {
 	         e.printStackTrace();
-	      } 		finally {
-				db.close();			
-			}
+	      }
 	}
-	void deleteBook(Book book) throws ClassNotFoundException, SQLException{
-		Connection db= MySQLConnUtils.getMySQLConnection();
-		try {
-			String sql = "DELETE FROM BOOK WHERE ISBN = ?";
-			PreparedStatement pstm = db.prepareStatement(sql);
-			pstm.setInt(1, book.getIsbn());
-			pstm.executeUpdate();
-		}catch(SQLException e) {
-			e.printStackTrace();
-			}
-		finally {
-			db.close();			
-		}
-	}
-	
-	void getBookInfo(Book book) {
-		
-	}
-	
-	void addAuthor(Author author) throws ClassNotFoundException, SQLException {
-		Connection db = MySQLConnUtils.getMySQLConnection();
-		try {
-			String sql = "INSERT INTO AUTHOR VALUES(?,?)";
-			PreparedStatement pstm = db.prepareStatement(sql);
 
+	
+	public ArrayList<Book> getBookInfo() throws SQLException {
+		ArrayList<Book> bookInfo = new ArrayList<>();
+	 
+		try {
+			String sql = "SELECT * FROM BOOK";
+			PreparedStatement pstm = connection.prepareStatement(sql);
 			ResultSet rs = pstm.executeQuery(sql);
-
-			int i = 1;
-			while (rs.next()) {
-				if (i != rs.getInt(1)) {
-					break;
-				}
-				i++;
+			while(rs.next()) {
+				int isbn = rs.getInt("ISBN");
+				String title = rs.getString("Title");
+				String language = rs.getString("Book_Language");
+				int authorId = rs.getInt("Author_Name");
+				int categoryId = rs.getInt("Cat_Name");
+				int noCopyActual = rs.getInt("No_Copy_Actual");
+				int noCopyCurrent = rs.getInt("No_Copy_Current");
+				
+				Book newBook = new Book(isbn, title, language, authorId, categoryId, noCopyActual, noCopyCurrent);
+				bookInfo.add(newBook);
 			}
-			pstm = db.prepareStatement(sql);
-			pstm.setInt(1, author.getAuthorId());
-			pstm.setString(2, author.getAuthorName());
-		} catch (SQLException e) {
-	         e.printStackTrace();
-	      } 		finally {
-				db.close();			
-			}
-	}
-	
-	void deleteAuthor(Author author) throws ClassNotFoundException, SQLException{
-		Connection db= MySQLConnUtils.getMySQLConnection();
-		try {
-			String sql = "DELETE FROM AUTHOR WHERE Author_ID= ?";
-			PreparedStatement pstm = db.prepareStatement(sql);
-			pstm.setInt(1, author.getAuthorId());
-			pstm.executeUpdate();
-		}catch(SQLException e) {
-			e.printStackTrace();
-			}
-		finally {
-			db.close();			
-		}
-	}
-	
-	void getAuthorInfo(Author author) {
-		
-	}
-	
-	void addCategory(Category category) throws ClassNotFoundException, SQLException {
-		Connection db = MySQLConnUtils.getMySQLConnection();
-		try {
-			String sql = "INSERT INTO CATEGORY VALUES(?,?)";
-			PreparedStatement pstm = db.prepareStatement(sql);
-
-			ResultSet rs = pstm.executeQuery(sql);
-
-			int i = 1;
-			while (rs.next()) {
-				if (i != rs.getInt(1)) {
-					break;
-				}
-				i++;
-			}
-			pstm = db.prepareStatement(sql);
-			pstm.setInt(1, category.getCategoryId());
-			pstm.setString(2, category.getCategoryName());
-			pstm.executeUpdate();
-		} catch (SQLException e) {
-	         e.printStackTrace();
-	      } 		finally {
-				db.close();			
-			}
-	}
-	
-	void deleteCategory(Category category) throws ClassNotFoundException, SQLException{
-		Connection db= MySQLConnUtils.getMySQLConnection();
-		try {
-			String sql = "DELETE FROM CATEGORY WHERE Cat_id = ?";
-			PreparedStatement pstm = db.prepareStatement(sql);
-			pstm.setInt(1, category.getCategoryId());
-			pstm.executeUpdate();
-		}catch(SQLException e) {
-			e.printStackTrace();
-			}
-		finally {
-			db.close();			
-		}
-	}
-	
-	void getCategoryInfo(Category category) {
-		
+	} catch (SQLException e) {
+        e.printStackTrace();
+     }
+		return bookInfo;
 	}
 }
