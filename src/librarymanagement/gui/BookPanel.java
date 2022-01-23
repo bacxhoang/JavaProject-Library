@@ -1,22 +1,21 @@
 package librarymanagement.gui;
 
-import java.awt.EventQueue;
-import java.awt.event.ActionEvent;
-
-import javax.swing.JFrame;
-import javax.swing.JButton;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.JTextField;
 import javax.swing.JLabel;
+import javax.swing.JTextField;
 
-public class BookPanel extends AbstractPanel {
-	private DefaultTableModel tableModel;
-	private JPanel contentPane;
+import librarymanagement.resource.Book;
+
+import javax.swing.JTable;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JScrollPane;
+
+public class BookPanel extends JPanel {
 	private JTextField textField;
 	private JTextField textField_1;
 	private JTextField textField_2;
@@ -24,132 +23,122 @@ public class BookPanel extends AbstractPanel {
 	private JTextField textField_4;
 	private JTextField textField_5;
 	private JTextField textField_6;
-	private DefaultTableModel table;
-	
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					GUI frame = new GUI();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-	
-	
+	private JTable table;
+
+	/**
+	 * Create the panel.
+	 */
 	public BookPanel() {
-		JPanel rootPanel = new JPanel();
-		rootPanel.setLayout(null);
-		
-		textField = new JTextField();
-		textField.setColumns(10);
-		textField.setBounds(115, 62, 96, 19);
-		rootPanel.add(textField);
-		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(115, 97, 96, 19);
-		rootPanel.add(textField_1);
-		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		textField_2.setBounds(115, 141, 96, 19);
-		rootPanel.add(textField_2);
-		
-		textField_3 = new JTextField();
-		textField_3.setColumns(10);
-		textField_3.setBounds(115, 183, 96, 19);
-		rootPanel.add(textField_3);
-		
-		textField_4 = new JTextField();
-		textField_4.setColumns(10);
-		textField_4.setBounds(115, 225, 96, 19);
-		rootPanel.add(textField_4);
-		
-		textField_5 = new JTextField();
-		textField_5.setColumns(10);
-		textField_5.setBounds(115, 263, 96, 19);
-		rootPanel.add(textField_5);
+		setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("ISBN");
-		lblNewLabel.setBounds(28, 65, 45, 13);
-		rootPanel.add(lblNewLabel);
+		lblNewLabel.setBounds(10, 36, 45, 13);
+		add(lblNewLabel);
 		
 		JLabel lblNewLabel_1 = new JLabel("Title");
-		lblNewLabel_1.setBounds(28, 100, 45, 13);
-		rootPanel.add(lblNewLabel_1);
+		lblNewLabel_1.setBounds(10, 72, 45, 13);
+		add(lblNewLabel_1);
 		
-		JLabel lblNewLabel_2 = new JLabel("authorId");
-		lblNewLabel_2.setBounds(28, 144, 45, 13);
-		rootPanel.add(lblNewLabel_2);
+		JLabel lblNewLabel_2 = new JLabel("Book Language");
+		lblNewLabel_2.setBounds(10, 117, 103, 13);
+		add(lblNewLabel_2);
 		
 		JLabel lblNewLabel_3 = new JLabel("AuthorId");
-		lblNewLabel_3.setBounds(28, 186, 45, 13);
-		rootPanel.add(lblNewLabel_3);
+		lblNewLabel_3.setBounds(10, 165, 45, 13);
+		add(lblNewLabel_3);
 		
 		JLabel lblNewLabel_4 = new JLabel("CategoryId");
-		lblNewLabel_4.setBounds(28, 228, 78, 13);
-		rootPanel.add(lblNewLabel_4);
+		lblNewLabel_4.setBounds(10, 206, 103, 13);
+		add(lblNewLabel_4);
 		
-		JLabel lblNewLabel_5 = new JLabel("NoOfCurrent");
-		lblNewLabel_5.setBounds(28, 266, 62, 13);
-		rootPanel.add(lblNewLabel_5);
+		JLabel lblNewLabel_5 = new JLabel("Number of Actual");
+		lblNewLabel_5.setBounds(10, 260, 103, 13);
+		add(lblNewLabel_5);
 		
-		textField_6 = new JTextField();
-		textField_6.setColumns(10);
-		textField_6.setBounds(115, 302, 96, 19);
-		rootPanel.add(textField_6);
+		JLabel lblNewLabel_6 = new JLabel("Number of Current");
+		lblNewLabel_6.setBounds(10, 312, 108, 13);
+		add(lblNewLabel_6);
 		
-		JLabel lblNewLabel_6 = new JLabel("NoOfActual");
-		lblNewLabel_6.setBounds(28, 305, 62, 13);
-		rootPanel.add(lblNewLabel_6);
+		JTextField isbnTF = new JTextField();
+		isbnTF.setBounds(124, 33, 96, 19);
+		add(isbnTF);
+		isbnTF.setColumns(10);
 		
-		table.setBounds(288, 62, 353, 256);
-		rootPanel.add(table);
-		String[] columms = new String [] {"ISBN", "Title", "Language", "AuthorId", "CategoryId", "No_of_current", "No_of_actual"};
-		table = new DefaultTableModel();
-		table.setColumnIdentifiers(columms);
-
-	}
-	
-	@Override
-	void handleBtnUpdate(ActionEvent evt) {
-		Object[][] data = new Object [][] {
-			{"101", "Harry Potter","English","3","13","10","10"},
-			{"102", "It","English","2","14","5","5"},
-			{"103", "The Shining","English","2","14","10","10"},
-			{"104", "Cujo","English","2","14","3","3"},
-			{"105", "The Adventure of Tom Sawyer","English","1","16","15","15"},
-			{"106", "A Christmas Carol","English","4","18","5","5"},
+		JTextField titleTF = new JTextField();
+		titleTF.setBounds(124, 69, 96, 19);
+		add(titleTF);
+		titleTF.setColumns(10);
+		
+		JTextField bookLangTF = new JTextField();
+		bookLangTF.setBounds(124, 114, 96, 19);
+		add(bookLangTF);
+		bookLangTF.setColumns(10);
+		
+		JTextField authorIdTF = new JTextField();
+		authorIdTF.setBounds(124, 162, 96, 19);
+		add(authorIdTF);
+		authorIdTF.setColumns(10);
+		
+		JTextField categoryIdTF = new JTextField();
+		categoryIdTF.setColumns(10);
+		categoryIdTF.setBounds(124, 203, 96, 19);
+		add(categoryIdTF);
+		
+		JTextField noactualTF = new JTextField();
+		noactualTF.setBounds(124, 257, 96, 19);
+		add(noactualTF);
+		noactualTF.setColumns(10);
+		
+		JTextField nocurrentlTF = new JTextField();
+		nocurrentlTF.setBounds(124, 309, 96, 19);
+		add(nocurrentlTF);
+		nocurrentlTF.setColumns(10);
+		
+		JButton btnAddButton = new JButton("Add");
+		btnAddButton.setBounds(77, 362, 85, 21);
+		add(btnAddButton);
+		
+		JButton btnUpdateButton = new JButton("Update");
+		btnUpdateButton.setBounds(379, 362, 85, 21);
+		add(btnUpdateButton);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(244, 36, 349, 294);
+		add(scrollPane);
+		Object[][] data= {};
+		String col[] = {"ISBN", "Title", "Book Language", "AuthorId", "CategoryId", "Number of Actual", "Number of Current"
 		};
 		
-		int len = data.length;
-		for(int i=0; i<len; i++){
-			tableModel.addRow(data[i]);
-		}
-	}
-
-	@Override
-	void handleBtnAdd(ActionEvent evt) {
-		// TODO Auto-generated method stub
+		JTable bookTable = new JTable(data, col);
+		bookTable.setBounds(244, 36, 349, 294);
+		scrollPane.setViewportView(bookTable);
 		
-	}
 
-	@Override
-	void handleBtnDelete(ActionEvent evt) {
-		// TODO Auto-generated method stub
-		int count = table.getRowCount();
-		if(count > 0){
-			int idx = table.getSelectedRow();
-			if (idx >= 0)
-				tableModel.removeRow(idx);
-			else
-				JOptionPane.showMessageDialog(null, "DELETE ERROR!!");
-		}
-		else
-			JOptionPane.showMessageDialog(null, "Table does not contain any records!!");
+		
+		
+		btnAddButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+			Book newBook = null;
+			newBook.getAuthorId();
+			newBook.getCategoryId();
+			newBook.getClass();
+			newBook.getIsbn();
+			newBook.getLanguage();
+			newBook.getNoCopyActual();
+			newBook.getTitle();
+			}
+		});
+		
+		
+		btnUpdateButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+			
+		});
 	}
 }

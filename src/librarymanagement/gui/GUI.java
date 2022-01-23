@@ -46,27 +46,26 @@ public class GUI extends JFrame {
 		
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBounds(5, 5, 540, 531);
+		tabbedPane.setBounds(5, 5, 642, 531);
 		contentPane.add(tabbedPane);
 		
+		BookPanel bookPane = new BookPanel();
+		tabbedPane.addTab("Book", null, bookPane, null);
 		
-		BookPanel bookPanel = new BookPanel();
-		bookPanel.table.setBounds(25, 503, 510, -468);
-		tabbedPane.addTab("Book", null, bookPanel, null);
+		AuthorPanel authorPane = new AuthorPanel();
+		tabbedPane.addTab("Author", null, authorPane, null);
 		
-		AuthorPanel authorPanel = new AuthorPanel();
-		tabbedPane.addTab("Author", null, authorPanel, null);
+		CategoryPanel categoryPane = new CategoryPanel();
+		tabbedPane.addTab("Category", null, categoryPane, null);
 		
-		BorrowerPanel borrowerPanel = new BorrowerPanel();
-		borrowerPanel.table.setBounds(25, 485, 510, -450);
-		tabbedPane.addTab("Borrower", null, borrowerPanel, null);
+		BorrowerPanel borrowerPane = new BorrowerPanel();
+		tabbedPane.addTab("Borrower", null, borrowerPane, null);
 		
-		CategoryPanel categoryPanel = new CategoryPanel();
-		tabbedPane.addTab("Category", null, categoryPanel, null);
+		StudentPanel studentPane = new StudentPanel();
+		tabbedPane.addTab("Student", null, studentPane, null);
 		
-		StudentPanel studentPanel = new StudentPanel();
-		tabbedPane.addTab("Student", null, studentPanel, null);
 		
+
 
 	}
 

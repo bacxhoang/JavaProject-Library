@@ -1,70 +1,65 @@
 package librarymanagement.gui;
 
-import java.awt.event.ActionEvent;
-
-import javax.swing.JOptionPane;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.JTextField;
-import javax.swing.JLabel;
 
-class AuthorPanel extends AbstractPanel {
-	private DefaultTableModel tableModel;
-	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
-	JTable table;
-	public AuthorPanel() { 
-	super(); 
-	
-	textField = new JTextField();
-	textField.setColumns(10);
-	textField.setBounds(122, 62, 96, 19);
-	getContentPane().add(textField);
-	
-	textField_1 = new JTextField();
-	textField_1.setColumns(10);
-	textField_1.setBounds(122, 97, 96, 19);
-	getContentPane().add(textField_1);
-	
-	JLabel lblAuthorid = new JLabel("AuthorId");
-	lblAuthorid.setBounds(35, 65, 45, 13);
-	getContentPane().add(lblAuthorid);
-	
-	JLabel lblNewLabel_1 = new JLabel("AuthorName");
-	lblNewLabel_1.setBounds(35, 100, 77, 13);
-	getContentPane().add(lblNewLabel_1);
-	table = new JTable();
-	String[] columms = new String [] {"Author_Id", "Author Name"};
-	tableModel = new DefaultTableModel();
-	tableModel.setColumnIdentifiers(columms);
-	table.setModel(tableModel);
-	}
-	
-	void handleBtnRefresh(ActionEvent evt) {
-		Object[][] data = new Object [][] {
-			{"1","Mark Twain"},
-			{"2","Stephen King"},
-			{"3","J K Rowlings"},
-			{"4","Charles Dicken"},
-			{"5","Agatha Christie"},
-		};
-		
-		int len = data.length;
-		for(int i=0; i<len; i++){
-			tableModel.addRow(data[i]);
-		}
-	}
+public class AuthorPanel extends JPanel {
 
-	void handleBtnAdd(ActionEvent evt) {
-		// TODO Auto-generated method stub
-		
-	}
+	/**
+	 * Create the panel.
+	 */
 
-	void handleBtnDelete(ActionEvent evt) {
-				JOptionPane.showMessageDialog(null, "DELETE ERROR!!");
+		private JTextField textField;
+		private JTextField textField_1;
+		private JTable table;
+
+		/**
+		 * Create the panel.
+		 */
+		public AuthorPanel() {
+			setLayout(null);
+			
+			JLabel lblNewLabel = new JLabel("AuthorId");
+			lblNewLabel.setBounds(10, 36, 89, 13);
+			add(lblNewLabel);
+			
+			JLabel lblNewLabel_1 = new JLabel("Author Name");
+			lblNewLabel_1.setBounds(10, 72, 89, 13);
+			add(lblNewLabel_1);
+			
+			JTextField authorIdTF = new JTextField();
+			authorIdTF.setBounds(109, 33, 96, 19);
+			add(authorIdTF);
+			authorIdTF.setColumns(10);
+			
+			JTextField authorNameTF = new JTextField();
+			authorNameTF.setBounds(109, 69, 96, 19);
+			add(authorNameTF);
+			authorNameTF.setColumns(10);
+			
+			JScrollPane scrollPane = new JScrollPane();
+			scrollPane.setBounds(244, 36, 349, 294);
+			add(scrollPane);
+			Object[][] data= {};
+			String col[] = {"AuthorId", "Author Name"
+			};
+			
+			JTable authorTable = new JTable(data, col);
+			authorTable.setBounds(244, 36, 349, 294);
+			scrollPane.setViewportView(authorTable);
+			
+			JButton btnAddButton = new JButton("Add");
+			btnAddButton.setBounds(77, 362, 85, 21);
+			add(btnAddButton);
+			
+			JButton btnUpdateButton = new JButton("Update");
+			btnUpdateButton.setBounds(379, 362, 85, 21);
+			add(btnUpdateButton);
 
 	}
+
 }
