@@ -1,14 +1,9 @@
-import librarymanagement.gui.LaunchPage;
-
+import librarymanagement.gui.*;
 public class App {
 
 	public static void main(String[] args) {
-				LaunchPage launchPage = new LaunchPage();
-				
-
-			}
-
-
+		@SuppressWarnings("unused")
+		LaunchPage launchpage = new LaunchPage();
 
 	}
-
+}

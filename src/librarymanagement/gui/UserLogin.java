@@ -1,12 +1,14 @@
-package librarymanagement.api;
+
+package librarymanagement.gui;
+
 
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import java.sql.PreparedStatement;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -20,6 +22,12 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JOptionPane;
 
+
+import librarymanagement.resource.Staff;
+import librarymanagement.database.MyConnection;
+
+
+
 public class UserLogin{
 	private JFrame UserLogin;
 	private JPanel contentPane;
@@ -27,6 +35,11 @@ public class UserLogin{
 	private JPasswordField passwordField;
 	private JButton btnLoginButton;
 	private JButton btnBack;
+	private JLabel lblUserLogin;
+	private JLabel lblUsername;
+	private JLabel  lblPassword;
+	
+
 	
 	public void setVisible(boolean b) {
 		UserLogin.setVisible(true);
@@ -45,7 +58,8 @@ public class UserLogin{
         UserLogin.setContentPane(contentPane);
         contentPane.setLayout(null);
 
-        JLabel lblUserLogin = new JLabel("Staff Login");
+
+        lblUserLogin = new JLabel("Staff Login");
         lblUserLogin.setFont(new Font("Times New Roman", Font.PLAIN, 42));
         lblUserLogin.setBounds(421, 53, 237, 50);
         contentPane.add(lblUserLogin);
@@ -56,12 +70,14 @@ public class UserLogin{
         contentPane.add(username);
         username.setColumns(10);
 
-        JLabel lblUsername = new JLabel("Username");
+
+        lblUsername = new JLabel("Username");
         lblUsername.setFont(new Font("Tahoma", Font.PLAIN, 20));
         lblUsername.setBounds(290, 196, 99, 29);
         contentPane.add(lblUsername);
 
-        JLabel lblPassword = new JLabel("Password");
+
+        lblPassword = new JLabel("Password");
         lblPassword.setFont(new Font("Tahoma", Font.PLAIN, 20));
         lblPassword.setBounds(290, 291, 99, 29);
         contentPane.add(lblPassword);
@@ -84,23 +100,26 @@ public class UserLogin{
         
         btnLoginButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String userName = username.getText();
-				String password = String.valueOf(passwordField.getPassword());
+
+        Staff staff = new Staff(0, null, null);
+				staff.setUsername(username.getText());
+				staff.setPassword(String.valueOf(passwordField.getPassword()));
+
 				Connection myConn = null;
 				PreparedStatement myStmt = null;
 				ResultSet rs = null;
 		try {
 			 // Connect to database
-            myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/librarymanagementsystem", "root", "123456");
+			myConn = MyConnection.connect();
             // Prepare the stored procedure call
             myStmt = myConn.prepareStatement("Select User_Name, Login_Password from Staff where User_Name=? and Login_Password=?");
-            myStmt.setString(1,userName);
-            myStmt.setString(2, password);
+            myStmt.setString(1,staff.getUsername());
+            myStmt.setString(2,staff.getPassword());
             rs = myStmt.executeQuery();
             if (rs.next()) {
                 UserLogin.dispose();
-                UserHome ah = new UserHome(userName);
-                ah.setVisible(true);
+                GUI home = new GUI();
+                home.setVisible(true);
                 JOptionPane.showMessageDialog(btnLoginButton, "You have successfully logged in");
             } else {
                 JOptionPane.showMessageDialog(btnLoginButton, "Wrong Username & Password");

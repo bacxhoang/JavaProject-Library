@@ -3,15 +3,11 @@ package librarymanagement.gui;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import javax.naming.NamingException;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -21,7 +17,11 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+
+import librarymanagement.database.MyConnection;
 import librarymanagement.database.SQLCustomException;
+import librarymanagement.resource.Staff;
+
 
 import java.sql.CallableStatement;
 
@@ -33,7 +33,10 @@ public class UserRegistration{
     private JPasswordField passwordField;
     private JButton RegisterButton;
     private JButton BackButton;
-    private static final Logger logger = Logger.getLogger(UserRegistration.class.getName());
+   private JLabel lblNewUserRegister;
+    private JLabel lblstaffId;
+    private JLabel lblUsername;
+    private JLabel lblPassword;
 
 	public void setVisible(boolean b) {
 		UserRegistration.setVisible(true);
@@ -53,12 +56,14 @@ public class UserRegistration{
         UserRegistration.setContentPane(contentPane);
         contentPane.setLayout(null);
 
-        JLabel lblNewUserRegister = new JLabel("Staff Register");
+        lblNewUserRegister = new JLabel("Staff Register");
+
         lblNewUserRegister.setFont(new Font("Times New Roman", Font.PLAIN, 42));
         lblNewUserRegister.setBounds(400, 53, 237, 50);
         contentPane.add(lblNewUserRegister);
 
-        JLabel lblstaffId = new JLabel("Staff\r\n ID");
+        lblstaffId = new JLabel("Staff\r\n ID");
+
         lblstaffId.setFont(new Font("Tahoma", Font.PLAIN, 20));
         lblstaffId.setBounds(582, 159, 99, 29);
         contentPane.add(lblstaffId);
@@ -76,12 +81,16 @@ public class UserRegistration{
         contentPane.add(username);
         username.setColumns(10);
 
-        JLabel lblUsername = new JLabel("Username");
+
+        lblUsername = new JLabel("Username");
+
         lblUsername.setFont(new Font("Tahoma", Font.PLAIN, 20));
         lblUsername.setBounds(58, 159, 99, 29);
         contentPane.add(lblUsername);
 
-        JLabel lblPassword = new JLabel("Password");
+
+        lblPassword = new JLabel("Password");
+
         lblPassword.setFont(new Font("Tahoma", Font.PLAIN, 20));
         lblPassword.setBounds(58, 245, 99, 29);
         contentPane.add(lblPassword);
@@ -106,9 +115,12 @@ public class UserRegistration{
         
         RegisterButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                int staffID = Integer.valueOf(staffId.getText());
-                String userName = username.getText();
-				String password = String.valueOf(passwordField.getPassword());
+
+                Staff staff = new Staff(0, null, null);
+				staff.setStaffId(Integer.valueOf(staffId.getText()));
+                staff.setUsername(username.getText());
+                staff.setPassword(String.valueOf(passwordField.getPassword()));
+
 				Connection myConn = null;
 				String register = "{call Register(?,?,?,?)}";
 				CallableStatement myStmt = null;
@@ -120,13 +132,15 @@ public class UserRegistration{
 
                  try {
                 	 // Connect to database
-                    myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/librarymanagementsystem", "root", "123456");
+
+                	myConn = MyConnection.connect();
                     // Prepare the stored procedure call
                     myStmt = myConn.prepareCall(register);
                     // Set parameter
-                    myStmt.setInt(1,staffID);
-                    myStmt.setString(2,userName);
-                    myStmt.setString(3,password);
+                    myStmt.setInt(1,staff.getStaffId());
+                    myStmt.setString(2,staff.getUsername());
+                    myStmt.setString(3,staff.getPassword());
+
                     myStmt.registerOutParameter(4,Types.INTEGER);
                     myStmt.execute();
                    int status = myStmt.getInt(4);

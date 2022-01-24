@@ -23,6 +23,9 @@ public class LaunchPage{
 	/**
 	 * Create the application.
 	 */
+public void setVisible(boolean b) {
+		launchPage.setVisible(true);
+	}
 	public LaunchPage() {
 		
 	
@@ -80,11 +83,6 @@ public class LaunchPage{
 	
 }
 
-
-	public void setVisible(boolean b) {
-		// TODO Auto-generated method stub
-		
-	}
 }
 
 

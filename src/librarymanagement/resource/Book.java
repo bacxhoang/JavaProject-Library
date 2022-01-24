@@ -1,43 +1,73 @@
 package librarymanagement.resource;
+import java.io.Serializable;
 
-public class Book{
+public class Book implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int isbn;
 	private String title;
 	private String language;
-	private int authorId;
-	private int categoryId;
+	private int bookauthorId;
+	private int bookcategoryId;
 	private int noCopyActual;
 	private int noCopyCurrent;
 	
-	public Book(int isbn,String title,String language,int authorId,int categoryId, int noCopyActual, int noCopyCurrent) {
+	public Book(int isbn, String title, String language, int bookauthorId, int bookcategoryId, int noCopyActual, int noCopyCurrent) {
 		this.isbn = isbn;
 		this.title = title;
 		this.language = language;
-		this.authorId = authorId;
-		this.categoryId = categoryId;
+		this.bookauthorId = bookauthorId;
+		this.bookcategoryId = bookcategoryId;
 		this.noCopyActual = noCopyActual;
 		this.noCopyCurrent = noCopyCurrent;
 	}
-	public int getIsbn(){
+	
+	public int getIsbn() {
 		return isbn;
-		}
+	}
+	public void setIsbn(int isbn) {
+		this.isbn = isbn;
+	}
 	public String getTitle() {
 		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
 	}
 	public String getLanguage() {
 		return language;
 	}
-	public int getAuthorId() {
-		return authorId;
+	public void setLanguage(String language) {
+		this.language = language;
 	}
-	public int getCategoryId() {
-		return categoryId;
+	public int getBookauthorId() {
+		return bookauthorId;
+	}
+	public void setBookauthorId(int bookauthorId) {
+		this.bookauthorId = bookauthorId;
+	}
+	public int getBookcategoryId() {
+		return bookcategoryId;
+	}
+	public void setBookcategoryId(int bookcategoryId) {
+		this.bookcategoryId = bookcategoryId;
 	}
 	public int getNoCopyActual() {
 		return noCopyActual;
 	}
+	public void setNoCopyActual(int noCopyActual) {
+		this.noCopyActual = noCopyActual;
+	}
 	public int getNoCopyCurrent() {
 		return noCopyCurrent;
 	}
+	public void setNoCopyCurrent(int noCopyCurrent) {
+		this.noCopyCurrent = noCopyCurrent;
+	}
+	
+	
+
 	
 }
