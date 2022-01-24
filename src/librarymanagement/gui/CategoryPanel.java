@@ -2,11 +2,12 @@ package librarymanagement.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.Types;
 
 import javax.swing.JButton;
@@ -18,13 +19,16 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import librarymanagement.api.LaunchPage;
+
 import librarymanagement.database.MyConnection;
 import librarymanagement.database.SQLCustomException;
-import librarymanagement.resource.Author;
 import librarymanagement.resource.Category;
 
 public class CategoryPanel extends JPanel {
+	/**
+	 * 
+	 */
+		private static final long serialVersionUID = 1L;
 		private JLabel lblCategoryId;
 		private JLabel lblCategoryName;
 		private JTextField categoryId;
@@ -73,7 +77,12 @@ public class CategoryPanel extends JPanel {
 			categoryTable = new JTable();
 			scrollPane.setViewportView(categoryTable);
 			categoryModel = new DefaultTableModel(){
-			    @Override
+			    /**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
+
+				@Override
 			    public boolean isCellEditable(int row, int column) {
 			        return false;
 			    }
@@ -83,8 +92,9 @@ public class CategoryPanel extends JPanel {
 			
 			btnAddButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-						int CategoryID = Integer.valueOf(categoryId.getText());
-						String CategoryName = categoryName.getText();
+						Category category = new Category(0, null);
+						category.setCategoryId(Integer.valueOf(categoryId.getText()));
+						category.setCategoryName(categoryName.getText());
 						Connection myConn = null;
 						String createCategory = "{call createCategory(?,?,?)}";
 						CallableStatement myStmt = null;
@@ -94,8 +104,8 @@ public class CategoryPanel extends JPanel {
 	                    // Prepare the stored procedure call
 	                    myStmt = myConn.prepareCall(createCategory);
 	                    // Set parameter
-	                    myStmt.setInt(1,CategoryID);
-	                    myStmt.setString(2,CategoryName);
+	                    myStmt.setInt(1,category.getCategoryId());
+	                    myStmt.setString(2,category.getCategoryName());
 	                    myStmt.registerOutParameter(3,Types.INTEGER);
 	                    myStmt.execute();
 	                   int status = myStmt.getInt(3);
@@ -118,23 +128,31 @@ public class CategoryPanel extends JPanel {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
+					Connection myConn = null;
+					String getCategory = "{call getCategory(?)}";
+					CallableStatement myStmt = null;
 					try {
 						categoryModel.setRowCount(0);
-						Connection connect = MyConnection.connect();
-						String sql = "SELECT * FROM CATEGORY"; 
-						//Create connection to Database
+						// Connect to database
+	                	myConn = MyConnection.connect();
+	                    // Prepare the stored procedure call
+	                    myStmt = myConn.prepareCall(getCategory);
+	                    // Set parameter
+	            
+	                    myStmt.registerOutParameter(1,Types.INTEGER);
+	                    ResultSet rs = myStmt.executeQuery();
+	                   int status = myStmt.getInt(1);
 
-						Statement stmt =  connect.createStatement(); 
-
-					//Executing query
-
-						ResultSet rs = stmt.executeQuery(sql);
-	                    
+						
 
 	                    //Setting up table auto-resizable.
 						categoryTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 						categoryTable.setFillsViewportHeight(true);
 						categoryTable.setFocusable(false);
+						if(status != 200) {
+							throw new SQLCustomException(status);
+						}
+						else {
 							while(rs.next()) {
 								String CategoryId = String.valueOf(rs.getInt("Cat_Id"));
 								String CategoryName = rs.getString("Cat_Name");
@@ -142,6 +160,7 @@ public class CategoryPanel extends JPanel {
 								DefaultTableModel tblModel = (DefaultTableModel)categoryTable.getModel();
 								tblModel.addRow(tbData);
 							}
+						}
 							
 					} catch (SQLException e1) {
 						// TODO Auto-generated catch block
@@ -149,6 +168,16 @@ public class CategoryPanel extends JPanel {
 					}
 				}
 				
+			});
+			categoryTable.addMouseListener(new MouseAdapter() {
+		
+				@Override
+				public void mouseClicked(MouseEvent evt) {
+					int selectedRowIndex = categoryTable.getSelectedRow();
+					
+					categoryId.setText(categoryModel.getValueAt(selectedRowIndex, 0).toString());
+					categoryName.setText(categoryModel.getValueAt(selectedRowIndex, 1).toString());
+				}
 			});
 	}
 }

@@ -2,12 +2,13 @@ package librarymanagement.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.Types;
 
 import javax.swing.JButton;
@@ -19,90 +20,110 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import librarymanagement.database.MyConnection;
-import librarymanagement.database.SQLCustomException;
-import librarymanagement.resource.Author;
-import librarymanagement.resource.Book;
+import librarymanagement.database.*;
 import librarymanagement.resource.Borrower;
 
 public class BorrowerPanel extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JLabel lblBorrowerNumber;
 	private JLabel lblBookId;
 	private JLabel lblBorrowedFrom;
 	private JLabel lblBorrowedTo;
 	private JLabel lblIssuedBy;
+	private JLabel lblReturnDate;
 	private JTextField borrowerNumber;
 	private JTextField bookId;
 	private JTextField borrowedFrom;
 	private JTextField borrowedTo;
 	private JTextField issuedBy;
+	private JTextField returnedDate;
 	private JButton btnAddButton;
 	private JButton btnUpdateButton;
 	private JButton btnDeleteButton;
+	private JButton btnReturnButton;
 	private JScrollPane scrollPane;
 	private JTable borrowerTable;
 	private DefaultTableModel borrowerModel;
+	
 	
 	
 	public BorrowerPanel() {
 		setLayout(null);
 		
 		lblBorrowerNumber = new JLabel("Borrower Number");
-		lblBorrowerNumber.setBounds(10, 36, 103, 13);
+		lblBorrowerNumber.setBounds(10, 40, 103, 13);
 		add(lblBorrowerNumber);
 		
 		lblBookId = new JLabel("Book Id");
-		lblBookId.setBounds(10, 72, 45, 13);
+		lblBookId.setBounds(10, 80, 45, 13);
 		add(lblBookId);
 		
 		lblBorrowedFrom = new JLabel("Borrowed From");
-		lblBorrowedFrom.setBounds(10, 117, 103, 13);
+		lblBorrowedFrom.setBounds(10, 120, 103, 13);
 		add(lblBorrowedFrom);
 		
 		lblBorrowedTo = new JLabel("Borrowed To");
-		lblBorrowedTo.setBounds(10, 165, 89, 13);
+		lblBorrowedTo.setBounds(10, 160, 89, 13);
 		add(lblBorrowedTo);
 		
 		lblIssuedBy = new JLabel("Issued By");
-		lblIssuedBy.setBounds(10, 263, 103, 13);
+		lblIssuedBy.setBounds(10, 200, 103, 13);
 		add(lblIssuedBy);
 		
 		borrowerNumber = new JTextField();
-		borrowerNumber.setBounds(124, 33, 96, 19);
+		borrowerNumber.setBounds(124, 35, 96, 19);
 		add(borrowerNumber);
 		borrowerNumber.setColumns(10);
-		
+	
 		bookId = new JTextField();
-		bookId.setBounds(124, 69, 96, 19);
+		bookId.setBounds(124, 75, 96, 19);
 		add(bookId);
 		bookId.setColumns(10);
 		
 		borrowedFrom = new JTextField();
-		borrowedFrom.setBounds(124, 114, 96, 19);
+		borrowedFrom.setBounds(124, 115, 96, 19);
 		add(borrowedFrom);
 		borrowedFrom.setColumns(10);
 		
 		borrowedTo = new JTextField();
-		borrowedTo.setBounds(124, 162, 96, 19);
+		borrowedTo.setBounds(124, 155, 96, 19);
 		add(borrowedTo);
 		borrowedTo.setColumns(10);
 		
 		issuedBy = new JTextField();
-		issuedBy.setBounds(124, 260, 96, 19);
+		issuedBy.setBounds(124, 195, 96, 19);
 		add(issuedBy);
 		issuedBy.setColumns(10);
 		
+	    returnedDate = new JTextField();
+	    returnedDate.setColumns(10);
+	    returnedDate.setBounds(124, 287, 96, 19);
+		add(returnedDate);
+		
 		btnAddButton = new JButton("Add");
-		btnAddButton.setBounds(77, 362, 85, 21);
+		btnAddButton.setBounds(65, 362, 85, 21);
 		add(btnAddButton);
 		
 		btnUpdateButton = new JButton("Update");
-		btnUpdateButton.setBounds(379, 362, 85, 21);
+		btnUpdateButton.setBounds(508, 362, 85, 21);
 		add(btnUpdateButton);
 		
 		btnDeleteButton = new JButton("Delete");
-		btnDeleteButton.setBounds(230, 362, 85, 21);
+		btnDeleteButton.setBounds(290, 362, 85, 21);
 		add(btnDeleteButton);
+		
+		btnReturnButton = new JButton("Return");
+		btnReturnButton.setBounds(65, 317, 85, 21);
+	    add(btnReturnButton);
+	
+		
+		lblReturnDate = new JLabel("Returned Date");
+		lblReturnDate.setBounds(10, 291, 103, 13);
+		add(lblReturnDate);
+
 
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(244, 36, 349, 294);
@@ -114,23 +135,32 @@ public class BorrowerPanel extends JPanel {
 	    borrowerTable = new JTable();
 		scrollPane.setViewportView(borrowerTable);
 		borrowerModel = new DefaultTableModel(){
-		    @Override
+		    /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
 		    public boolean isCellEditable(int row, int column) {
 		        return false;
 		    }
 		};
 		borrowerTable.setModel(borrowerModel);
+		
+				
+		
 		borrowerModel.setColumnIdentifiers(col);
 		
 		
 		btnAddButton.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				int BorrowerNumber = Integer.valueOf(borrowerNumber.getText());
-				int BookId = Integer.valueOf(bookId.getText());
-				Date BorrowedFrom = Date.valueOf(borrowedFrom.getText());
-				Date BorrowedTo = Date.valueOf(borrowedTo.getText());
-				int IssuedBy = Integer.valueOf(issuedBy.getText());
+				Borrower borrower = new Borrower(0, 0, null, null, null, 0);
+				borrower.setBorrowerNum(Integer.valueOf(borrowerNumber.getText()));
+				borrower.setBorrowerbookId(Integer.valueOf(bookId.getText()));
+				borrower.setBorrowedFrom(Date.valueOf(borrowedFrom.getText()));
+				borrower.setBorrowedTo(Date.valueOf(borrowedTo.getText()));
+				borrower.setIssuedBy(Integer.valueOf(issuedBy.getText()));
 				Connection myConn = null;
 				String createBorrower = "{call createBorrower(?,?,?,?,?,?)}";
 				CallableStatement myStmt = null;
@@ -140,11 +170,11 @@ public class BorrowerPanel extends JPanel {
                 // Prepare the stored procedure call
                 myStmt = myConn.prepareCall(createBorrower);
                 // Set parameter
-                myStmt.setInt(1,BorrowerNumber);
-                myStmt.setInt(2,BookId);
-                myStmt.setDate(3,BorrowedFrom);
-                myStmt.setDate(4,BorrowedTo);
-                myStmt.setInt(5,IssuedBy);
+                myStmt.setInt(1,borrower.getBorrowerNum());
+                myStmt.setInt(2,borrower.getBorrowerbookId());
+                myStmt.setDate(3,borrower.getBorrowedFrom());
+                myStmt.setDate(4,borrower.getBorrowedTo());
+                myStmt.setInt(5,borrower.getIssuedBy());
                 myStmt.registerOutParameter(6,Types.INTEGER);
                 myStmt.execute();
                int status = myStmt.getInt(6);
@@ -168,39 +198,47 @@ public class BorrowerPanel extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				
+				Connection myConn = null;
+				String getBorrower = "{call getBorrower(?)}";
+				CallableStatement myStmt = null;
 				try {
 					borrowerModel.setRowCount(0);
-					Connection connect = MyConnection.connect();
-					String sql = "SELECT * FROM BORROWER"; 
-					//Create connection to Database
-
-					Statement stmt =  connect.createStatement(); 
-
-				//Executing query
-
-					ResultSet rs = stmt.executeQuery(sql);
-                    
+					// Connect to database
+	            	myConn = MyConnection.connect();
+	                // Prepare the stored procedure call
+	                myStmt = myConn.prepareCall(getBorrower);
+	                // Set Parameter
+	                myStmt.registerOutParameter(1,Types.INTEGER);
+	            	//Executing query
+	                ResultSet rs = myStmt.executeQuery();
+	                int status = myStmt.getInt(1);
+			
 
                     //Setting up table auto-resizable.
-					borrowerTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+	                borrowerTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 					borrowerTable.setFillsViewportHeight(true);
 					borrowerTable.setFocusable(false);
-						while(rs.next()) {
-							String BorrowerNum = String.valueOf(rs.getInt("Borrower_Num"));
-							String BookId = String.valueOf(rs.getInt("Book_Id"));
-							String BorrowedFrom = String.valueOf(rs.getDate("Borrowed_from"));
-							String BorrowedTo = String.valueOf(rs.getDate("Borrowed_to"));
-							String ReturnedDate = String.valueOf(rs.getDate("Returned_date"));
-							String IssuedBy = String.valueOf(rs.getInt("Issued_by"));
-						
-							
-							String tbData[] = {BorrowerNum,BookId,BorrowedFrom,BorrowedTo,ReturnedDate,IssuedBy};
-							DefaultTableModel tblModel = (DefaultTableModel)borrowerTable.getModel();
-							tblModel.addRow(tbData);
+					if(status != 200) {
+						throw new SQLCustomException(status);
 						}
+					else{
+						while(rs.next()) {
+					
+						String BorrowerNum = String.valueOf(rs.getInt("Borrower_Id"));
+						String BookId = String.valueOf(rs.getInt("ISBN"));
+						String BorrowedFrom = String.valueOf(rs.getDate("Borrowed_from"));
+						String BorrowedTo = String.valueOf(rs.getDate("Borrowed_to"));
+						String ReturnedDate = String.valueOf(rs.getDate("Returned_date"));
+						String IssuedBy = String.valueOf(rs.getInt("Staff_Id"));
+					
 						
+						String tbData[] = {BorrowerNum,BookId,BorrowedFrom,BorrowedTo,ReturnedDate,IssuedBy};
+						DefaultTableModel tblModel = (DefaultTableModel)borrowerTable.getModel();
+						tblModel.addRow(tbData);
+					}
+					}
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}
@@ -211,9 +249,95 @@ public class BorrowerPanel extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
+				Borrower borrower = new Borrower(0, 0, null, null, null, 0);
+				borrower.setBorrowerNum(Integer.valueOf(borrowerNumber.getText()));
+				borrower.setBorrowerbookId(Integer.valueOf(bookId.getText()));
+				Connection myConn = null;
+				String deleteBorrower = "{call deleteBorrower(?,?,?)}";
+				CallableStatement myStmt = null;
+				try {
+					// Connect to database
+	            	myConn = MyConnection.connect();
+	                // Prepare the stored procedure call
+	                myStmt = myConn.prepareCall(deleteBorrower);
+	                // Set parameter
+	                myStmt.setInt(1,borrower.getBorrowerNum());
+	                myStmt.setInt(2,borrower.getBorrowerbookId());
+	                myStmt.registerOutParameter(3,Types.INTEGER);
+	                myStmt.execute();
+	               int status = myStmt.getInt(3);
+	             if (status != 200) {
+	                 throw new SQLCustomException(status);
+	               }
+	             else {
+	            	 JOptionPane.showMessageDialog(btnDeleteButton, "Deleted Successfully ");
+					
+				}
+				 } catch (SQLException ex) {
+	            	 JOptionPane.showMessageDialog(btnDeleteButton, "Error: "+ex.toString());
+	               
+				}
+				
+				
+				
 			}
 			
+		});
+		btnReturnButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				Borrower borrower = new Borrower(0, 0, null, null, null, 0);
+				borrower.setBorrowerNum(Integer.valueOf(borrowerNumber.getText()));
+				borrower.setBorrowerbookId(Integer.valueOf(bookId.getText()));
+				borrower.setReturnedDate(Date.valueOf(returnedDate.getText()));
+				
+				Connection myConn = null;
+				String setReturnedDate = "{call setReturnedDate(?,?,?,?)}";
+				CallableStatement myStmt = null;
+				
+				try {
+					// Connect to database
+	            	myConn = MyConnection.connect();
+	                // Prepare the stored procedure call
+	                myStmt = myConn.prepareCall(setReturnedDate);
+	                // Set parameter
+	                myStmt.setInt(1,borrower.getBorrowerNum());
+	                myStmt.setInt(2,borrower.getBorrowerbookId());
+	                myStmt.setDate(3,borrower.getReturnedDate());
+	                myStmt.registerOutParameter(4,Types.INTEGER);
+	                myStmt.execute();
+	                int status = myStmt.getInt(4);
+	                
+	                if (status != 200) {
+		                 throw new SQLCustomException(status);
+		               }
+		             else {
+		            	 JOptionPane.showMessageDialog(btnReturnButton, "Returned Successfully ");
+						
+					}
+					 } catch (SQLException ex) {
+		            	 JOptionPane.showMessageDialog(btnReturnButton, "Error: "+ex.toString());
+		               
+					}
+					
+					
+					
+				}
+			
+		});
+		borrowerTable.addMouseListener(new MouseAdapter() {
+	
+			@Override
+			public void mouseClicked(MouseEvent evt) {
+				int selectedRowIndex = borrowerTable.getSelectedRow();
+				
+				borrowerNumber.setText(borrowerModel.getValueAt(selectedRowIndex, 0).toString());
+				bookId.setText(borrowerModel.getValueAt(selectedRowIndex, 1).toString());
+				borrowedFrom.setText(borrowerModel.getValueAt(selectedRowIndex, 2).toString());
+				borrowedTo.setText(borrowerModel.getValueAt(selectedRowIndex, 3).toString());
+				returnedDate.setText(borrowerModel.getValueAt(selectedRowIndex, 4).toString());
+				issuedBy.setText(borrowerModel.getValueAt(selectedRowIndex, 5).toString());
+			}
 		});
 	}
 }

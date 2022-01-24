@@ -8,7 +8,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import librarymanagement.api.UserLogin;
 import javax.swing.JTabbedPane;
 
 import javax.swing.SwingConstants;
@@ -74,11 +73,10 @@ public class GUI{
 	                	GUI.dispose();
 	                    UserLogin obj = new UserLogin();
 	                    obj.setVisible(true);
+	                } else if (a == JOptionPane.NO_OPTION) {
+	                	JOptionPane.showMessageDialog(btnLogoutButton, "Alright then ");
 	                }
-	                GUI.dispose();
-	                UserLogin obj = new UserLogin();
-	                obj.setVisible(true);
-
+	             
 	            }
 	        });
 		

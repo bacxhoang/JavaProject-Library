@@ -1,14 +1,5 @@
 package librarymanagement.gui;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Types;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -18,11 +9,29 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
+
+
+
 import librarymanagement.database.MyConnection;
 import librarymanagement.database.SQLCustomException;
+import librarymanagement.resource.Author;
 
 public class AuthorPanel extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JLabel lblAuthorId;
 	private JLabel lblAuthorName;
 	private JTextField authorId;
@@ -72,7 +81,12 @@ public class AuthorPanel extends JPanel {
 		String[] col = { "AuthorId", "Author Name" };
 
 		authorModel = new DefaultTableModel(){
-		    @Override
+		    /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
 		    public boolean isCellEditable(int row, int column) {
 		        return false;
 		    }
@@ -86,8 +100,9 @@ public class AuthorPanel extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int AuthorID = Integer.valueOf(authorId.getText());
-				String AuthorName = authorName.getText();
+				Author author = new Author(0, null);
+				author.setAuthorId(Integer.valueOf(authorId.getText()));
+				author.setAuthorName(authorName.getText());
 				Connection myConn = null;
 				String createAuthor = "{call createAuthor(?,?,?)}";
 				CallableStatement myStmt = null;
@@ -97,8 +112,8 @@ public class AuthorPanel extends JPanel {
                 // Prepare the stored procedure call
                 myStmt = myConn.prepareCall(createAuthor);
                 // Set parameter
-                myStmt.setInt(1,AuthorID);
-                myStmt.setString(2,AuthorName);
+                myStmt.setInt(1,author.getAuthorId());
+                myStmt.setString(2,author.getAuthorName());
                 myStmt.registerOutParameter(3,Types.INTEGER);
                 myStmt.execute();
                int status = myStmt.getInt(3);
@@ -123,38 +138,57 @@ public class AuthorPanel extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+
+				Connection myConn = null;
+				String getAuthor = "{call getAuthor(?)}";
+				CallableStatement myStmt = null;
 				try {
 					authorModel.setRowCount(0);
-					Connection connect = MyConnection.connect();
-					String sql = "SELECT * FROM AUTHOR"; 
-					//Create connection to Database
-
-					Statement stmt =  connect.createStatement(); 
-
-				//Executing query
-
-					ResultSet rs = stmt.executeQuery(sql);
-                    
+					// Connect to database
+	            	myConn = MyConnection.connect();
+	                // Prepare the stored procedure call
+	                myStmt = myConn.prepareCall(getAuthor);
+	                // Set Parameter
+	                myStmt.registerOutParameter(1,Types.INTEGER);
+	            	//Executing query
+	                ResultSet rs = myStmt.executeQuery();
+	                int status = myStmt.getInt(1);
+			
 
                     //Setting up table auto-resizable.
-					authorTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+	                authorTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 					authorTable.setFillsViewportHeight(true);
 					authorTable.setFocusable(false);
-						while(rs.next()) {
-							String authorId = String.valueOf(rs.getInt("Author_Id"));
-							String authorName = rs.getString("Author_Name");
-							
-							String tbData[] = {authorId,authorName};
-							DefaultTableModel tblModel = (DefaultTableModel)authorTable.getModel();
-							tblModel.addRow(tbData);
+					if(status != 200) {
+						throw new SQLCustomException(status);
 						}
+					else{
+						while(rs.next()) {
+					
+						String AuthorId = String.valueOf(rs.getInt("Author_Id"));
+						String AuthorName = rs.getString("Author_Name");;
+					
 						
+						String tbData[] = {AuthorId,AuthorName};
+						DefaultTableModel tblModel = (DefaultTableModel)authorTable.getModel();
+						tblModel.addRow(tbData);
+					}
+					}
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}
 			
+		});
+		authorTable.addMouseListener(new MouseAdapter() {
+			
+			@Override
+			public void mouseClicked(MouseEvent evt) {
+				int selectedRowIndex = authorTable.getSelectedRow();
+				
+				authorId.setText(authorModel.getValueAt(selectedRowIndex, 0).toString());
+				authorName.setText(authorModel.getValueAt(selectedRowIndex, 1).toString());
+			}
 		});
 	}
 

@@ -1,13 +1,13 @@
 package librarymanagement.gui;
 
+import javax.swing.JButton;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JScrollPane;
+
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-
-import librarymanagement.resource.Book;
-import librarymanagement.database.*;
-
 import javax.swing.JTable;
 
 import java.awt.event.ActionEvent;
@@ -16,18 +16,18 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.Types;
 
-import javax.swing.JButton;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.JScrollPane;
-
+import librarymanagement.database.*;
+import librarymanagement.resource.Book;
 public class BookPanel extends JPanel {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JLabel lblisbn;
 	private JLabel lblTitle;
 	private JLabel lblLanguage;
@@ -132,7 +132,12 @@ public class BookPanel extends JPanel {
 		String[] col = {"ISBN", "Title", "Book Language", "AuthorId", "CategoryId", "Number of Actual", "Number of Current"
 		};
 		bookModel = new DefaultTableModel() {
-		    @Override
+		    /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
 		    public boolean isCellEditable(int row, int column) {
 		        return false;
 		    }
@@ -146,13 +151,14 @@ public class BookPanel extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int ISBN = Integer.valueOf(isbn.getText());
-				String Title = title.getText();
-				String BookLanguage = bookLang.getText();
-				int AuthorId = Integer.valueOf(authorId.getText());
-				int CategoryId = Integer.valueOf(categoryId.getText());
-				int NoActual = Integer.valueOf(noactual.getText());
-				int NoCurrent = Integer.valueOf(nocurrent.getText());
+				Book book = new Book(0, null, null, 0, 0, 0, 0);
+				book.setIsbn(Integer.valueOf(isbn.getText()));
+				book.setTitle(title.getText());
+				book.setLanguage(bookLang.getText());
+				book.setBookauthorId(Integer.valueOf(authorId.getText()));
+				book.setBookcategoryId(Integer.valueOf(categoryId.getText()));
+				book.setNoCopyActual(Integer.valueOf(noactual.getText()));
+				book.setNoCopyCurrent(Integer.valueOf(nocurrent.getText()));
 				Connection myConn = null;
 				String createBook = "{call createBook(?,?,?,?,?,?,?,?)}";
 				CallableStatement myStmt = null;
@@ -162,13 +168,13 @@ public class BookPanel extends JPanel {
                 // Prepare the stored procedure call
                 myStmt = myConn.prepareCall(createBook);
                 // Set parameter
-                myStmt.setInt(1,ISBN);
-                myStmt.setString(2,Title);
-                myStmt.setString(3,BookLanguage);
-                myStmt.setInt(4,AuthorId);
-                myStmt.setInt(5,CategoryId);
-                myStmt.setInt(6,NoActual);
-                myStmt.setInt(7,NoCurrent);
+                myStmt.setInt(1,book.getIsbn());
+                myStmt.setString(2,book.getTitle());
+                myStmt.setString(3,book.getLanguage());
+                myStmt.setInt(4,book.getBookauthorId());
+                myStmt.setInt(5,book.getBookcategoryId());
+                myStmt.setInt(6,book.getNoCopyActual());
+                myStmt.setInt(7,book.getNoCopyCurrent());
                 myStmt.registerOutParameter(8,Types.INTEGER);
                 myStmt.execute();
                int status = myStmt.getInt(8);
@@ -191,30 +197,36 @@ public class BookPanel extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
+				Connection myConn = null;
+				String getBook = "{call getBook(?)}";
+				CallableStatement myStmt = null;
 				try {
 					bookModel.setRowCount(0);
-					Connection connect = MyConnection.connect();
-					String sql = "SELECT * FROM BOOK"; 
-					//Create connection to Database
+					// Connect to database
+	            	myConn = MyConnection.connect();
+	                // Prepare the stored procedure call
+	                myStmt = myConn.prepareCall(getBook);
+	                // Set parameter
+	                myStmt.registerOutParameter(1,Types.INTEGER);
+	                ResultSet rs = myStmt.executeQuery();
+	                int status = myStmt.getInt(1);
 
-					Statement stmt =  connect.createStatement(); 
-
-				//Executing query
-
-					ResultSet rs = stmt.executeQuery(sql);
+					
                     
 
                     //Setting up table auto-resizable.
                     bookTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
                     bookTable.setFillsViewportHeight(true);
                     bookTable.setFocusable(false);
+                    if(status != 200) {
+                    	throw new SQLCustomException(status);
+                    }else {
 						while(rs.next()) {
 							String ISBN = String.valueOf(rs.getInt("ISBN"));
 							String Title = rs.getString("Title");
 							String BookLanguage = rs.getString("Book_language");
 							String AuthorId = String.valueOf(rs.getInt("Author_Id"));
-							String CategoryId = String.valueOf(rs.getInt("Category_Id"));
+							String CategoryId = String.valueOf(rs.getInt("Cat_Id"));
 							String NoActual = String.valueOf(rs.getInt("No_Copy_Actual"));
 							String NoCurrent = String.valueOf(rs.getInt("No_Copy_Current"));
 							
@@ -222,9 +234,9 @@ public class BookPanel extends JPanel {
 							DefaultTableModel tblModel = (DefaultTableModel)bookTable.getModel();
 							tblModel.addRow(tbData);
 						}
+                    }
 						
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}
@@ -232,10 +244,7 @@ public class BookPanel extends JPanel {
 		});
 		
 		bookTable.addMouseListener(new MouseAdapter() {
-			private void JTableMouseClicked() {
-				// TODO Auto-generated method stub
-
-			}
+		
 			@Override
 			public void mouseClicked(MouseEvent evt) {
 				int selectedRowIndex = bookTable.getSelectedRow();
