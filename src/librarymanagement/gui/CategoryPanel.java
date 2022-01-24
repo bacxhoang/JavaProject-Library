@@ -72,7 +72,12 @@ public class CategoryPanel extends JPanel {
 			
 			categoryTable = new JTable();
 			scrollPane.setViewportView(categoryTable);
-			categoryModel = new DefaultTableModel();
+			categoryModel = new DefaultTableModel(){
+			    @Override
+			    public boolean isCellEditable(int row, int column) {
+			        return false;
+			    }
+			};
 			categoryModel.setColumnIdentifiers(col);
 			categoryTable.setModel(categoryModel);
 			

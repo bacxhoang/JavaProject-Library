@@ -131,7 +131,12 @@ public class BookPanel extends JPanel {
 		
 		String[] col = {"ISBN", "Title", "Book Language", "AuthorId", "CategoryId", "Number of Actual", "Number of Current"
 		};
-		bookModel = new DefaultTableModel();
+		bookModel = new DefaultTableModel() {
+		    @Override
+		    public boolean isCellEditable(int row, int column) {
+		        return false;
+		    }
+		};
 
 		bookModel.setColumnIdentifiers(col);
 		bookTable.setModel(bookModel);

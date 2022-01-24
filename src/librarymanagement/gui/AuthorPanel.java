@@ -71,7 +71,12 @@ public class AuthorPanel extends JPanel {
 		
 		String[] col = { "AuthorId", "Author Name" };
 
-		authorModel = new DefaultTableModel();
+		authorModel = new DefaultTableModel(){
+		    @Override
+		    public boolean isCellEditable(int row, int column) {
+		        return false;
+		    }
+		};
 		authorModel.setColumnIdentifiers(col);
 		authorTable.setModel(authorModel);
 

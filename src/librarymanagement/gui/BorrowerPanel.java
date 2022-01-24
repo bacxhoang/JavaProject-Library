@@ -113,7 +113,12 @@ public class BorrowerPanel extends JPanel {
 		
 	    borrowerTable = new JTable();
 		scrollPane.setViewportView(borrowerTable);
-		borrowerModel = new DefaultTableModel();
+		borrowerModel = new DefaultTableModel(){
+		    @Override
+		    public boolean isCellEditable(int row, int column) {
+		        return false;
+		    }
+		};
 		borrowerTable.setModel(borrowerModel);
 		borrowerModel.setColumnIdentifiers(col);
 		

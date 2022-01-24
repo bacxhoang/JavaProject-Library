@@ -99,7 +99,12 @@ public class StudentPanel extends JPanel {
 		
 		studentTable = new JTable();
 		scrollPane.setViewportView(studentTable);
-		studentModel = new DefaultTableModel();
+		studentModel = new DefaultTableModel(){
+		    @Override
+		    public boolean isCellEditable(int row, int column) {
+		        return false;
+		    }
+		};
 		studentModel.setColumnIdentifiers(col);
 		studentTable.setModel(studentModel);
 		
