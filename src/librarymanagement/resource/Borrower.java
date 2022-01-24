@@ -1,9 +1,13 @@
 package librarymanagement.resource;
 
-import java.sql.Time;
 import java.sql.Date;
+import java.io.Serializable;
 
-public class Borrower {
+public class Borrower implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int borrowerNum;
 	private int borrowerbookId;
 	private Date borrowedFrom;
@@ -11,10 +15,19 @@ public class Borrower {
 	private Date returnedDate;
 	private int issuedBy;
 	
+	public Borrower(int borrowerNum,int borrowerbookId,Date borrowedFrom,Date borrowedTo,Date returnedDate,int issuedBy) {
+		this.borrowerNum = borrowerNum;
+		this.borrowerbookId = borrowerbookId;
+		this.borrowedFrom = borrowedFrom;
+		this.borrowedTo = borrowedTo;
+		this.returnedDate = returnedDate;
+		this.issuedBy = issuedBy;
+	}
+	
 	public int getBorrowerNum() {
 		return borrowerNum;
 	}
-	public void setBorrowerId(int borrowerNum) {
+	public void setBorrowerNum(int borrowerNum) {
 		this.borrowerNum = borrowerNum;
 	}
 	public int getBorrowerbookId() {

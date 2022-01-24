@@ -1,10 +1,22 @@
 package librarymanagement.resource;
+import java.io.Serializable;
 
-public class Student{
+public class Student implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int studentId;
 	private String studentName;
 	private int borrowerId;
 	private int phoneNumber;
+	
+	public Student(int studentId, String studentName, int borrowerId, int phoneNumber) {
+		this.studentId = studentId;
+		this.studentName = studentName;
+		this.borrowerId = borrowerId;
+		this.phoneNumber = phoneNumber;
+	}
 	
 	public int getStudentId() {
 		return studentId;

@@ -1,6 +1,11 @@
 package librarymanagement.resource;
+import java.io.Serializable;
 
-public class Book{
+public class Book implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int isbn;
 	private String title;
 	private String language;
@@ -8,6 +13,16 @@ public class Book{
 	private int bookcategoryId;
 	private int noCopyActual;
 	private int noCopyCurrent;
+	
+	public Book(int isbn, String title, String language, int bookauthorId, int bookcategoryId, int noCopyActual, int noCopyCurrent) {
+		this.isbn = isbn;
+		this.title = title;
+		this.language = language;
+		this.bookauthorId = bookauthorId;
+		this.bookcategoryId = bookcategoryId;
+		this.noCopyActual = noCopyActual;
+		this.noCopyCurrent = noCopyCurrent;
+	}
 	
 	public int getIsbn() {
 		return isbn;

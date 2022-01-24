@@ -1,9 +1,20 @@
 package librarymanagement.resource;
+import java.io.Serializable;
 
-public class Staff{
+public class Staff implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int staffId;
 	private String username;
 	private String password;
+	
+	public Staff(int staffId, String username, String password) {
+		this.staffId = staffId;
+		this.username = username;
+		this.password = password;
+	}
 	
 	public int getStaffId() {
 		return staffId;

@@ -1,8 +1,19 @@
 package librarymanagement.resource;
 
-public class Author{
+import java.io.Serializable;
+
+public class Author implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int authorId;
 	private String authorName;
+	
+	public Author(int authorId,String authorName) {
+		this.authorId = authorId;
+		this.authorName = authorName;
+	}
 	
 	public int getAuthorId() {
 		return authorId;
