@@ -1,9 +1,14 @@
 package librarymanagement.api;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
+
 import java.awt.Font;
-import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.PreparedStatement;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -13,43 +18,41 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-public class UserLogin extends JFrame {
+import librarymanagement.database.MyConnection;
+import librarymanagement.gui.GUI;
 
+import javax.swing.JOptionPane;
+
+public class UserLogin{
+	private JFrame UserLogin;
 	private JPanel contentPane;
 	private JTextField username;
 	private JPasswordField passwordField;
-	private JButton btnNewButton;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					UserLogin frame = new UserLogin();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+	private JButton btnLoginButton;
+	private JButton btnBack;
+	private JLabel lblUserLogin;
+	private JLabel lblUsername;
+	private JLabel  lblPassword;
+	
+	
+	public void setVisible(boolean b) {
+		UserLogin.setVisible(true);
+		
 	}
 
-	/**
-	 * Create the frame.
-	 */
+
+
 	public UserLogin() {
-		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\nhoc_\\Downloads\\Adobe Scan 03 Sep 2021_1.jpg"));
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(450, 190, 1014, 597);
-        setResizable(false);
+		UserLogin = new JFrame();
+		UserLogin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		UserLogin.setBounds(450, 190, 1014, 597);
+		UserLogin.setResizable(false);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-        setContentPane(contentPane);
+        UserLogin.setContentPane(contentPane);
         contentPane.setLayout(null);
 
-        JLabel lblUserLogin = new JLabel("Staff Login");
+        lblUserLogin = new JLabel("Staff Login");
         lblUserLogin.setFont(new Font("Times New Roman", Font.PLAIN, 42));
         lblUserLogin.setBounds(421, 53, 237, 50);
         contentPane.add(lblUserLogin);
@@ -60,12 +63,12 @@ public class UserLogin extends JFrame {
         contentPane.add(username);
         username.setColumns(10);
 
-        JLabel lblUsername = new JLabel("Username");
+        lblUsername = new JLabel("Username");
         lblUsername.setFont(new Font("Tahoma", Font.PLAIN, 20));
         lblUsername.setBounds(290, 196, 99, 29);
         contentPane.add(lblUsername);
 
-        JLabel lblPassword = new JLabel("Password");
+        lblPassword = new JLabel("Password");
         lblPassword.setFont(new Font("Tahoma", Font.PLAIN, 20));
         lblPassword.setBounds(290, 291, 99, 29);
         contentPane.add(lblPassword);
@@ -76,10 +79,54 @@ public class UserLogin extends JFrame {
         contentPane.add(passwordField);
         
         
-        btnNewButton = new JButton("Login");
-        btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 22));
-        btnNewButton.setBounds(386, 447, 259, 74);
-        contentPane.add(btnNewButton);
-	}
+        btnLoginButton = new JButton("Login");
+        btnLoginButton.setFont(new Font("Tahoma", Font.PLAIN, 22));
+        btnLoginButton.setBounds(130, 425, 259, 74);
+        contentPane.add(btnLoginButton);
+        
+        btnBack = new JButton("Back");
+        btnBack.setFont(new Font("Tahoma", Font.PLAIN, 22));
+        btnBack.setBounds(625, 425, 259, 74);
+        contentPane.add(btnBack);
+        
+        btnLoginButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String userName = username.getText();
+				String password = String.valueOf(passwordField.getPassword());
+				Connection myConn = null;
+				PreparedStatement myStmt = null;
+				ResultSet rs = null;
+		try {
+			 // Connect to database
+			myConn = MyConnection.connect();
+            // Prepare the stored procedure call
+            myStmt = myConn.prepareStatement("Select User_Name, Login_Password from Staff where User_Name=? and Login_Password=?");
+            myStmt.setString(1,userName);
+            myStmt.setString(2, password);
+            rs = myStmt.executeQuery();
+            if (rs.next()) {
+                UserLogin.dispose();
+                GUI home = new GUI();
+                home.setVisible(true);
+                JOptionPane.showMessageDialog(btnLoginButton, "You have successfully logged in");
+            } else {
+                JOptionPane.showMessageDialog(btnLoginButton, "Wrong Username & Password");
+            }
+            {
+            	myConn.close();
+            }
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+    }
+});
+        btnBack.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		UserLogin.dispose();
+        		LaunchPage launchPage = new LaunchPage();
+        		launchPage.setVisible(true);
+        	}
+        });
 
+}
 }

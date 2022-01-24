@@ -4,15 +4,18 @@ public class Author{
 	private int authorId;
 	private String authorName;
 	
-	public Author(){
-		this.authorId = authorId;
-		this.authorName = authorName;
-	}
-	public int getAuthorId(int authorId) {
+	public int getAuthorId() {
 		return authorId;
 	}
-	public String getAuthorName(String authorName) {
+	public void setAuthorId(int authorId) {
+		this.authorId = authorId;
+	}
+	public String getAuthorName() {
 		return authorName;
 	}
+	public void setAuthorName(String authorName) {
+		this.authorName = authorName;
+	}
+	
 
 }

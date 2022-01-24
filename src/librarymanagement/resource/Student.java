@@ -5,28 +5,32 @@ public class Student{
 	private String studentName;
 	private int borrowerId;
 	private int phoneNumber;
-
-	public Student() {
+	
+	public int getStudentId() {
+		return studentId;
+	}
+	public void setStudentId(int studentId) {
 		this.studentId = studentId;
+	}
+	public String getStudentName() {
+		return studentName;
+	}
+	public void setStudentName(String studentName) {
 		this.studentName = studentName;
+	}
+	public int getBorrowerId() {
+		return borrowerId;
+	}
+	public void setBorrowerId(int borrowerId) {
 		this.borrowerId = borrowerId;
+	}
+	public int getPhoneNumber() {
+		return phoneNumber;
+	}
+	public void setPhoneNumber(int phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
 
-	public int getStudentId(int studentId) {
-		return studentId;
-	}
-
-	public String getStudentName(String studentName) {
-		return studentName;
-	}
-
-	public int getBorrowerId(int borrowerId) {
-		return borrowerId;
-	}
-
-	public int getPhoneNumber(int phoneNumber) {
-		return phoneNumber;
-	}
+	
 	
 }

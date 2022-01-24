@@ -4,16 +4,18 @@ public class Category {
 	private int categoryId;
 	private String categoryName;
 	
-	public Category() {
-		this.categoryId = categoryId;
-		this.categoryName = categoryName;
-	}
-
-	public int getCategoryId(int categoryId) {
+	public int getCategoryId() {
 		return categoryId;
 	}
-
-	public String getCategoryName(String categoryName) {
+	public void setCategoryId(int categoryId) {
+		this.categoryId = categoryId;
+	}
+	public String getCategoryName() {
 		return categoryName;
 	}
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+	}
+	
+	
 }

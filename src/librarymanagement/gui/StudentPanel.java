@@ -2,13 +2,16 @@ package librarymanagement.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -16,76 +19,87 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import librarymanagement.database.MyConnection;
-import librarymanagement.resource.Category;
+import librarymanagement.database.SQLCustomException;
 import librarymanagement.resource.Student;
 
 public class StudentPanel extends JPanel {
+	private JLabel lblStudentId;
+	private JLabel lblStudentName;
+	private JLabel lblBorrowerId;
+	private JLabel lblPhoneNumber;
+	private JTextField studentId;
+	private JTextField studentName;
+	private JTextField borrowerId;
+	private JTextField phoneNumber;
+	private JButton btnAddButton;
+	private JButton btnUpdateButton;
+	private JButton btnDeleteButton;
+	private JScrollPane scrollPane;
+	private JTable studentTable;
+	private DefaultTableModel studentModel;
 
-	/**
-	 * Create the panel.
-	 */
 	public StudentPanel() {
 		setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("Student Id");
-		lblNewLabel.setBounds(10, 36, 89, 13);
-		add(lblNewLabel);
+		lblStudentId = new JLabel("Student Id");
+		lblStudentId.setBounds(10, 36, 89, 13);
+		add(lblStudentId);
 		
-		JLabel lblNewLabel_1 = new JLabel("Student Name");
-		lblNewLabel_1.setBounds(10, 72, 89, 13);
-		add(lblNewLabel_1);
+		lblStudentName = new JLabel("Student Name");
+		lblStudentName.setBounds(10, 72, 89, 13);
+		add(lblStudentName);
 		
-		JLabel lblNewLabel_2 = new JLabel("Borrower Id");
-		lblNewLabel_2.setBounds(10, 117, 103, 13);
-		add(lblNewLabel_2);
+		lblBorrowerId = new JLabel("Borrower Id");
+		lblBorrowerId.setBounds(10, 117, 103, 13);
+		add(lblBorrowerId);
 		
-		JLabel lblNewLabel_3 = new JLabel("Phone Number");
-		lblNewLabel_3.setBounds(10, 165, 89, 13);
-		add(lblNewLabel_3);
-		
-		
-		JTextField studentIdTF = new JTextField();
-		studentIdTF.setBounds(109, 33, 96, 19);
-		add(studentIdTF);
-		studentIdTF.setColumns(10);
-		
-		JTextField studentNameTF = new JTextField();
-		studentNameTF.setBounds(109, 69, 96, 19);
-		add(studentNameTF);
-		studentNameTF.setColumns(10);
-		
-		JTextField borrowerNumberTF = new JTextField();
-		borrowerNumberTF.setBounds(109, 114, 96, 19);
-		add(borrowerNumberTF);
-		borrowerNumberTF.setColumns(10);
-		
-		JTextField phoneNumTF = new JTextField();
-		phoneNumTF.setBounds(109, 162, 96, 19);
-		add(phoneNumTF);
-		phoneNumTF.setColumns(10);
+		 lblPhoneNumber = new JLabel("Phone Number");
+		lblPhoneNumber.setBounds(10, 165, 89, 13);
+		add(lblPhoneNumber);
 		
 		
-		JButton btnAddButton = new JButton("Add");
+		 studentId = new JTextField();
+		studentId.setBounds(109, 33, 96, 19);
+		add(studentId);
+		studentId.setColumns(10);
+		
+		studentName = new JTextField();
+		studentName.setBounds(109, 69, 96, 19);
+		add(studentName);
+		studentName.setColumns(10);
+		
+		borrowerId = new JTextField();
+		borrowerId.setBounds(109, 114, 96, 19);
+		add(borrowerId);
+		borrowerId.setColumns(10);
+		
+		phoneNumber = new JTextField();
+		phoneNumber.setBounds(109, 162, 96, 19);
+		add(phoneNumber);
+		phoneNumber.setColumns(10);
+		
+		
+		btnAddButton = new JButton("Add");
 		btnAddButton.setBounds(77, 362, 85, 21);
 		add(btnAddButton);
 		
-		JButton btnUpdateButton = new JButton("Update");
+		btnUpdateButton = new JButton("Update");
 		btnUpdateButton.setBounds(379, 362, 85, 21);
 		add(btnUpdateButton);
 		
-		JButton btnDeleteButton = new JButton("Delete");
+		btnDeleteButton = new JButton("Delete");
 		btnDeleteButton.setBounds(230, 362, 85, 21);
 		add(btnDeleteButton);
 		
-		JScrollPane scrollPane = new JScrollPane();
+		scrollPane = new JScrollPane();
 		scrollPane.setBounds(244, 36, 349, 294);
 		add(scrollPane);
 		String col[] = {"Student Id", "Student Name", "Borrower Id", "Phone Number"
 		};
 		
-		JTable studentTable = new JTable();
+		studentTable = new JTable();
 		scrollPane.setViewportView(studentTable);
-		DefaultTableModel studentModel = new DefaultTableModel();
+		studentModel = new DefaultTableModel();
 		studentModel.setColumnIdentifiers(col);
 		studentTable.setModel(studentModel);
 		
@@ -93,7 +107,37 @@ public class StudentPanel extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
+				int StudentId = Integer.valueOf(studentId.getText());
+				String StudentName = studentName.getText();
+				int BorrowerId = Integer.valueOf(borrowerId.getText());
+				int PhoneNumber = Integer.valueOf(phoneNumber.getText());
+				Connection myConn = null;
+				String createStudent = "{call createStudent(?,?,?,?,?)}";
+				CallableStatement myStmt = null;
+			try {
+				// Connect to database
+            	myConn = MyConnection.connect();
+                // Prepare the stored procedure call
+                myStmt = myConn.prepareCall(createStudent);
+                // Set parameter
+                myStmt.setInt(1,StudentId);
+                myStmt.setString(2,StudentName);
+                myStmt.setInt(3,BorrowerId);
+                myStmt.setInt(4,PhoneNumber);
+                myStmt.registerOutParameter(5,Types.INTEGER);
+                myStmt.execute();
+               int status = myStmt.getInt(5);
+             if (status != 200) {
+                 throw new SQLCustomException(status);
+               }
+             else {
+            	 JOptionPane.showMessageDialog(btnAddButton, "Added Successfully ");
+				
+			}
+			 } catch (SQLException ex) {
+            	 JOptionPane.showMessageDialog(btnAddButton, "Error: "+ex.toString());
+               
+			}
 			}
 			
 		});
@@ -120,12 +164,16 @@ public class StudentPanel extends JPanel {
 					studentTable.setFillsViewportHeight(true);
 					studentTable.setFocusable(false);
 						while(rs.next()) {
-							Student newStudent = new Student();
-							int studentId = newStudent.getStudentId(rs.getInt(2));
-							String studentName = newStudent.getStudentName(rs.getString(3));
-							int borrowerId = newStudent.getBorrowerId(rs.getInt(4));
-							int phoneNumber = newStudent.getPhoneNumber(rs.getInt(5));
-							studentModel.addRow(new Object[] {studentId, studentName, borrowerId, phoneNumber});
+							String StudentId = String.valueOf(rs.getInt("Student_Id"));
+							String StudentName = rs.getString("Student_Name");
+							String BorrowerId = String.valueOf(rs.getInt("Borrower_Id"));
+							String PhoneNumber = String.valueOf(rs.getInt("Phone_Number"));
+							
+							
+							
+							String tbData[] = {StudentId,StudentName,BorrowerId,PhoneNumber};
+							DefaultTableModel tblModel = (DefaultTableModel)studentTable.getModel();
+							tblModel.addRow(tbData);
 						}
 						
 				} catch (SQLException e1) {

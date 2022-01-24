@@ -2,13 +2,16 @@ package librarymanagement.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -16,53 +19,59 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import librarymanagement.database.MyConnection;
-import librarymanagement.resource.Author;
-import librarymanagement.resource.Book;
+import librarymanagement.database.SQLCustomException;
 
 public class AuthorPanel extends JPanel {
 
-	/**
-	 * Create the panel.
-	 */
+	private JLabel lblAuthorId;
+	private JLabel lblAuthorName;
+	private JTextField authorId;
+	private JTextField authorName;
+	private JButton btnAddButton;
+	private JButton btnUpdateButton;
+	private JScrollPane scrollPane;
+	private JTable authorTable;
+	private DefaultTableModel authorModel;
+	
 	public AuthorPanel() {
 		setLayout(null);
 
-		JLabel lblNewLabel = new JLabel("AuthorId");
-		lblNewLabel.setBounds(10, 36, 89, 13);
-		add(lblNewLabel);
+		lblAuthorId = new JLabel("AuthorId");
+		lblAuthorId.setBounds(10, 36, 89, 13);
+		add(lblAuthorId);
 
-		JLabel lblNewLabel_1 = new JLabel("Author Name");
-		lblNewLabel_1.setBounds(10, 72, 89, 13);
-		add(lblNewLabel_1);
+		lblAuthorName = new JLabel("Author Name");
+		lblAuthorName.setBounds(10, 72, 89, 13);
+		add(lblAuthorName);
 
-		JTextField authorIdTF = new JTextField();
-		authorIdTF.setBounds(109, 33, 96, 19);
-		add(authorIdTF);
-		authorIdTF.setColumns(10);
+		authorId = new JTextField();
+		authorId.setBounds(109, 33, 96, 19);
+		add(authorId);
+		authorId.setColumns(10);
 
-		JTextField authorNameTF = new JTextField();
-		authorNameTF.setBounds(109, 69, 96, 19);
-		add(authorNameTF);
-		authorNameTF.setColumns(10);
+		authorName = new JTextField();
+		authorName.setBounds(109, 69, 96, 19);
+		add(authorName);
+		authorName.setColumns(10);
 
-		JButton btnAddButton = new JButton("Add");
+		btnAddButton = new JButton("Add");
 		btnAddButton.setBounds(77, 362, 85, 21);
 		add(btnAddButton);
 
-		JButton btnUpdateButton = new JButton("Update");
+		btnUpdateButton = new JButton("Update");
 		btnUpdateButton.setBounds(379, 362, 85, 21);
 		add(btnUpdateButton);
 		
-		JScrollPane scrollPane = new JScrollPane();
+		scrollPane = new JScrollPane();
 		scrollPane.setBounds(278, 36, 306, 290);
 		add(scrollPane);
 		
-		JTable authorTable = new JTable();
+		authorTable = new JTable();
 		scrollPane.setViewportView(authorTable);
 		
 		String[] col = { "AuthorId", "Author Name" };
 
-		DefaultTableModel authorModel = new DefaultTableModel();
+		authorModel = new DefaultTableModel();
 		authorModel.setColumnIdentifiers(col);
 		authorTable.setModel(authorModel);
 
@@ -72,7 +81,34 @@ public class AuthorPanel extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
+				int AuthorID = Integer.valueOf(authorId.getText());
+				String AuthorName = authorName.getText();
+				Connection myConn = null;
+				String createAuthor = "{call createAuthor(?,?,?)}";
+				CallableStatement myStmt = null;
+			try {
+				// Connect to database
+            	myConn = MyConnection.connect();
+                // Prepare the stored procedure call
+                myStmt = myConn.prepareCall(createAuthor);
+                // Set parameter
+                myStmt.setInt(1,AuthorID);
+                myStmt.setString(2,AuthorName);
+                myStmt.registerOutParameter(3,Types.INTEGER);
+                myStmt.execute();
+               int status = myStmt.getInt(3);
+             if (status != 200) {
+                 throw new SQLCustomException(status);
+               }
+             else {
+            	 JOptionPane.showMessageDialog(btnAddButton, "Added Successfully ");
+				
+			}
+			 } catch (SQLException ex) {
+            	 JOptionPane.showMessageDialog(btnAddButton, "Error: "+ex.toString());
+               
+			}
+		
 
 			}
 		});
@@ -99,10 +135,12 @@ public class AuthorPanel extends JPanel {
 					authorTable.setFillsViewportHeight(true);
 					authorTable.setFocusable(false);
 						while(rs.next()) {
-							Author newAuthor = new Author();
-							int authorId = newAuthor.getAuthorId(rs.getInt(2));
-							String authorName = newAuthor.getAuthorName(rs.getString(3));
-							authorModel.addRow(new Object[] {authorId, authorName});
+							String authorId = String.valueOf(rs.getInt("Author_Id"));
+							String authorName = rs.getString("Author_Name");
+							
+							String tbData[] = {authorId,authorName};
+							DefaultTableModel tblModel = (DefaultTableModel)authorTable.getModel();
+							tblModel.addRow(tbData);
 						}
 						
 				} catch (SQLException e1) {

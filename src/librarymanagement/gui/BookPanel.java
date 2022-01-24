@@ -10,109 +10,126 @@ import librarymanagement.database.*;
 
 import javax.swing.JTable;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JScrollPane;
 
 public class BookPanel extends JPanel {
-	private JTable table;
-	private JTable table_1;
-	/**
-	 * Create the panel.
-	 */
+	
+	private JLabel lblisbn;
+	private JLabel lblTitle;
+	private JLabel lblLanguage;
+	private JLabel lblauthorId;
+	private JLabel lblcategoryId;
+	private JLabel lblNoActual;
+	private JLabel lblNoCurrent;
+	private JTextField isbn;
+	private JTextField title;
+	private JTextField bookLang;
+	private JTextField authorId;
+	private JTextField categoryId;
+	private JTextField noactual;
+	private JTextField nocurrent;
+	private JButton btnAddButton;
+	private JButton btnUpdateButton;
+	private JScrollPane scrollPane;
+	private JTable bookTable;
+	private DefaultTableModel bookModel;
+	
 	public BookPanel() {
 		setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("ISBN");
-		lblNewLabel.setBounds(10, 36, 45, 13);
-		add(lblNewLabel);
+		lblisbn = new JLabel("ISBN");
+		lblisbn.setBounds(10, 36, 45, 13);
+		add(lblisbn);
 		
-		JLabel lblNewLabel_1 = new JLabel("Title");
-		lblNewLabel_1.setBounds(10, 72, 45, 13);
-		add(lblNewLabel_1);
+		lblTitle = new JLabel("Title");
+		lblTitle.setBounds(10, 72, 45, 13);
+		add(lblTitle);
 		
-		JLabel lblNewLabel_2 = new JLabel("Book Language");
-		lblNewLabel_2.setBounds(10, 117, 103, 13);
-		add(lblNewLabel_2);
+		lblLanguage = new JLabel("Book Language");
+		lblLanguage.setBounds(10, 117, 103, 13);
+		add(lblLanguage);
 		
-		JLabel lblNewLabel_3 = new JLabel("AuthorId");
-		lblNewLabel_3.setBounds(10, 165, 45, 13);
-		add(lblNewLabel_3);
+		lblauthorId = new JLabel("AuthorId");
+		lblauthorId.setBounds(10, 165, 45, 13);
+		add(lblauthorId);
 		
-		JLabel lblNewLabel_4 = new JLabel("CategoryId");
-		lblNewLabel_4.setBounds(10, 206, 103, 13);
-		add(lblNewLabel_4);
+		lblcategoryId = new JLabel("CategoryId");
+		lblcategoryId.setBounds(10, 206, 103, 13);
+		add(lblcategoryId);
 		
-		JLabel lblNewLabel_5 = new JLabel("Number of Actual");
-		lblNewLabel_5.setBounds(10, 260, 103, 13);
-		add(lblNewLabel_5);
+		lblNoActual = new JLabel("Number of Actual");
+		lblNoActual.setBounds(10, 260, 103, 13);
+		add(lblNoActual);
 		
-		JLabel lblNewLabel_6 = new JLabel("Number of Current");
-		lblNewLabel_6.setBounds(10, 312, 108, 13);
-		add(lblNewLabel_6);
+		lblNoCurrent = new JLabel("Number of Current");
+		lblNoCurrent.setBounds(10, 312, 108, 13);
+		add(lblNoCurrent);
 		
-		JTextField isbnTF = new JTextField();
-		isbnTF.setBounds(124, 33, 96, 19);
-		add(isbnTF);
-		isbnTF.setColumns(10);
+		isbn = new JTextField();
+		isbn.setBounds(124, 33, 96, 19);
+		add(isbn);
+		isbn.setColumns(10);
 		
-		JTextField titleTF = new JTextField();
-		titleTF.setBounds(124, 69, 96, 19);
-		add(titleTF);
-		titleTF.setColumns(10);
+		title = new JTextField();
+		title.setBounds(124, 69, 96, 19);
+		add(title);
+		title.setColumns(10);
 		
-		JTextField bookLangTF = new JTextField();
-		bookLangTF.setBounds(124, 114, 96, 19);
-		add(bookLangTF);
-		bookLangTF.setColumns(10);
+		bookLang = new JTextField();
+		bookLang.setBounds(124, 114, 96, 19);
+		add(bookLang);
+		bookLang.setColumns(10);
 		
-		JTextField authorIdTF = new JTextField();
-		authorIdTF.setBounds(124, 162, 96, 19);
-		add(authorIdTF);
-		authorIdTF.setColumns(10);
+		authorId = new JTextField();
+		authorId.setBounds(124, 162, 96, 19);
+		add(authorId);
+		authorId.setColumns(10);
 		
-		JTextField categoryIdTF = new JTextField();
-		categoryIdTF.setColumns(10);
-		categoryIdTF.setBounds(124, 203, 96, 19);
-		add(categoryIdTF);
+		categoryId = new JTextField();
+		categoryId.setColumns(10);
+		categoryId.setBounds(124, 203, 96, 19);
+		add(categoryId);
 		
-		JTextField noactualTF = new JTextField();
-		noactualTF.setBounds(124, 257, 96, 19);
-		add(noactualTF);
-		noactualTF.setColumns(10);
+		noactual = new JTextField();
+		noactual.setBounds(124, 257, 96, 19);
+		add(noactual);
+		noactual.setColumns(10);
 		
-		JTextField nocurrentlTF = new JTextField();
-		nocurrentlTF.setBounds(124, 309, 96, 19);
-		add(nocurrentlTF);
-		nocurrentlTF.setColumns(10);
+		nocurrent = new JTextField();
+		nocurrent.setBounds(124, 309, 96, 19);
+		add(nocurrent);
+		nocurrent.setColumns(10);
 		
-		JButton btnAddButton = new JButton("Add");
+		btnAddButton = new JButton("Add");
 		btnAddButton.setBounds(77, 362, 85, 21);
 		add(btnAddButton);
 		
-		JButton btnUpdateButton = new JButton("Update");
+		btnUpdateButton = new JButton("Update");
 		btnUpdateButton.setBounds(379, 362, 85, 21);
 		add(btnUpdateButton);
 		
-		JScrollPane scrollPane = new JScrollPane();
+		scrollPane = new JScrollPane();
 		scrollPane.setBounds(278, 36, 306, 290);
 		add(scrollPane);
 		
-		JTable bookTable = new JTable();
+		bookTable = new JTable();
 		scrollPane.setViewportView(bookTable);
 		
 		String[] col = {"ISBN", "Title", "Book Language", "AuthorId", "CategoryId", "Number of Actual", "Number of Current"
 		};
-		DefaultTableModel bookModel = new DefaultTableModel();
+		bookModel = new DefaultTableModel();
 
 		bookModel.setColumnIdentifiers(col);
 		bookTable.setModel(bookModel);
@@ -122,31 +139,42 @@ public class BookPanel extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-			
-			String isbn = isbnTF.getText();
-			String title = titleTF.getText();
-			String bookLang = bookLangTF.getText();
-			String authorid = authorIdTF.getText();
-			String categoryid = categoryIdTF.getText();
-			String noofactual= noactualTF.getText();
-			String noofcurrent = nocurrentlTF.getText();
-			
-			if (isbn.isEmpty() ) {
-                JOptionPane.showMessageDialog(null, "Please enter isbn"); //Display dialog box with the message
-			}	else if (title.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Please enter title"); //Display dialog box with the message
-            }	else if (bookLang.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Please enter Language");
-			}	else if (authorid.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Please enter author id");
-			}	else if (categoryid.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Please enter category id");
-			}	else if (noofactual.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Please enter number of book actual");
-			}	else if (noofcurrent.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Please enter number of book curret");
-			}	else {
-
+				int ISBN = Integer.valueOf(isbn.getText());
+				String Title = title.getText();
+				String BookLanguage = bookLang.getText();
+				int AuthorId = Integer.valueOf(authorId.getText());
+				int CategoryId = Integer.valueOf(categoryId.getText());
+				int NoActual = Integer.valueOf(noactual.getText());
+				int NoCurrent = Integer.valueOf(nocurrent.getText());
+				Connection myConn = null;
+				String createBook = "{call createBook(?,?,?,?,?,?,?,?)}";
+				CallableStatement myStmt = null;
+			try {
+				// Connect to database
+            	myConn = MyConnection.connect();
+                // Prepare the stored procedure call
+                myStmt = myConn.prepareCall(createBook);
+                // Set parameter
+                myStmt.setInt(1,ISBN);
+                myStmt.setString(2,Title);
+                myStmt.setString(3,BookLanguage);
+                myStmt.setInt(4,AuthorId);
+                myStmt.setInt(5,CategoryId);
+                myStmt.setInt(6,NoActual);
+                myStmt.setInt(7,NoCurrent);
+                myStmt.registerOutParameter(8,Types.INTEGER);
+                myStmt.execute();
+               int status = myStmt.getInt(8);
+             if (status != 200) {
+                 throw new SQLCustomException(status);
+               }
+             else {
+            	 JOptionPane.showMessageDialog(btnAddButton, "Added Successfully ");
+				
+			}
+			 } catch (SQLException ex) {
+            	 JOptionPane.showMessageDialog(btnAddButton, "Error: "+ex.toString());
+               
 			}
 			}
 		});
@@ -174,15 +202,17 @@ public class BookPanel extends JPanel {
                     bookTable.setFillsViewportHeight(true);
                     bookTable.setFocusable(false);
 						while(rs.next()) {
-							Book newBook = new Book();
-							int Isbn = newBook.getIsbn(rs.getInt(2));
-							String Title = newBook.getTitle(rs.getString(3));
-							String language = newBook.getLanguage(rs.getString(4));
-							int authorId = newBook.getAuthorId(rs.getInt(5));
-							int categoryId = newBook.getCategoryId(rs.getInt(6));
-							int noCopyActual = newBook.getNoCopyActual(rs.getInt(7));
-							int noCopyCurrent = newBook.getNoCopyCurrent(rs.getInt(8));
-							bookModel.addRow(new Object[] {Isbn, Title, language, authorId, categoryId, noCopyActual, noCopyCurrent });
+							String ISBN = String.valueOf(rs.getInt("ISBN"));
+							String Title = rs.getString("Title");
+							String BookLanguage = rs.getString("Book_language");
+							String AuthorId = String.valueOf(rs.getInt("Author_Id"));
+							String CategoryId = String.valueOf(rs.getInt("Category_Id"));
+							String NoActual = String.valueOf(rs.getInt("No_Copy_Actual"));
+							String NoCurrent = String.valueOf(rs.getInt("No_Copy_Current"));
+							
+							String tbData[] = {ISBN,Title,BookLanguage,AuthorId,CategoryId,NoActual,NoCurrent};
+							DefaultTableModel tblModel = (DefaultTableModel)bookTable.getModel();
+							tblModel.addRow(tbData);
 						}
 						
 				} catch (SQLException e1) {

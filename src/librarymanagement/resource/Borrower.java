@@ -4,43 +4,48 @@ import java.sql.Time;
 import java.sql.Date;
 
 public class Borrower {
-	private int borrowerId;
-	private int bookId;
+	private int borrowerNum;
+	private int borrowerbookId;
 	private Date borrowedFrom;
 	private Date borrowedTo;
 	private Date returnedDate;
 	private int issuedBy;
 	
-	public Borrower() {
-		this.borrowerId = borrowerId;
-		this.bookId = bookId;
-		this.borrowedFrom = borrowedFrom;
-		this.borrowedTo = borrowedTo;
-		this.returnedDate = returnedDate;
-		this.issuedBy = issuedBy;
+	public int getBorrowerNum() {
+		return borrowerNum;
 	}
-	
-	public int getborrowerId(int borrowerId) {
-		return borrowerId;
+	public void setBorrowerId(int borrowerNum) {
+		this.borrowerNum = borrowerNum;
 	}
-
-	public int getBookId(int bookId) {
-		return bookId;
+	public int getBorrowerbookId() {
+		return borrowerbookId;
 	}
-
-	public Date getBorrowedFrom(Date borrowedFrom) {
+	public void setBorrowerbookId(int borrowerbookId) {
+		this.borrowerbookId = borrowerbookId;
+	}
+	public Date getBorrowedFrom() {
 		return borrowedFrom;
 	}
-
-	public Date getBorrowedTo(Date borrowedTo) {
+	public void setBorrowedFrom(Date borrowedFrom) {
+		this.borrowedFrom = borrowedFrom;
+	}
+	public Date getBorrowedTo() {
 		return borrowedTo;
 	}
-
-	public Date getReturnedDate(Date returnedDate) {
+	public void setBorrowedTo(Date borrowedTo) {
+		this.borrowedTo = borrowedTo;
+	}
+	public Date getReturnedDate() {
 		return returnedDate;
 	}
-
-	public int getIssuedBy(int issuedBy) {
+	public void setReturnedDate(Date returnedDate) {
+		this.returnedDate = returnedDate;
+	}
+	public int getIssuedBy() {
 		return issuedBy;
 	}
+	public void setIssuedBy(int issuedBy) {
+		this.issuedBy = issuedBy;
+	}
+
 }

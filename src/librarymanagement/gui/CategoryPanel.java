@@ -2,78 +2,113 @@ package librarymanagement.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import librarymanagement.api.LaunchPage;
 import librarymanagement.database.MyConnection;
+import librarymanagement.database.SQLCustomException;
 import librarymanagement.resource.Author;
 import librarymanagement.resource.Category;
 
 public class CategoryPanel extends JPanel {
-
-		/**
-		 * Create the panel.
-		 */
+		private JLabel lblCategoryId;
+		private JLabel lblCategoryName;
+		private JTextField categoryId;
+		private JTextField categoryName;
+		private JButton btnAddButton;
+		private JButton btnUpdateButton;
+		private JScrollPane scrollPane;
+		private JTable categoryTable;
+		private DefaultTableModel categoryModel;
+		
 		public CategoryPanel() {
 			setLayout(null);
 			
-			JLabel lblNewLabel = new JLabel("Category Id");
-			lblNewLabel.setBounds(10, 36, 89, 13);
-			add(lblNewLabel);
+			lblCategoryId = new JLabel("Category Id");
+			lblCategoryId.setBounds(10, 36, 89, 13);
+			add(lblCategoryId);
 			
-			JLabel lblNewLabel_1 = new JLabel("Category Name");
-			lblNewLabel_1.setBounds(10, 72, 89, 13);
-			add(lblNewLabel_1);
+			lblCategoryName = new JLabel("Category Name");
+			lblCategoryName.setBounds(10, 72, 89, 13);
+			add(lblCategoryName);
 			
-			JTextField categoryIdTF = new JTextField();
-			categoryIdTF.setBounds(109, 33, 96, 19);
-			add(categoryIdTF);
-			categoryIdTF.setColumns(10);
+			categoryId = new JTextField();
+			categoryId.setBounds(109, 33, 96, 19);
+			add(categoryId);
+			categoryId.setColumns(10);
 			
-			JTextField categoryNameTF = new JTextField();
-			categoryNameTF.setBounds(109, 69, 96, 19);
-			add(categoryNameTF);
-			categoryNameTF.setColumns(10);
+			categoryName = new JTextField();
+			categoryName.setBounds(109, 69, 96, 19);
+			add(categoryName);
+			categoryName.setColumns(10);
 			
-			JButton btnAddButton = new JButton("Add");
+			btnAddButton = new JButton("Add");
 			btnAddButton.setBounds(77, 362, 85, 21);
 			add(btnAddButton);
 			
-			JButton btnUpdateButton = new JButton("Update");
+			btnUpdateButton = new JButton("Update");
 			btnUpdateButton.setBounds(379, 362, 85, 21);
 			add(btnUpdateButton);
 
-			JScrollPane scrollPane = new JScrollPane();
+			scrollPane = new JScrollPane();
 			scrollPane.setBounds(244, 36, 349, 294);
 			add(scrollPane);
 			String col[] = {"Category Id", "Category Name"
 			};
 			
-			JTable categoryTable = new JTable();
+			categoryTable = new JTable();
 			scrollPane.setViewportView(categoryTable);
-			DefaultTableModel categoryModel = new DefaultTableModel();
+			categoryModel = new DefaultTableModel();
 			categoryModel.setColumnIdentifiers(col);
 			categoryTable.setModel(categoryModel);
 			
 			btnAddButton.addActionListener(new ActionListener() {
-				
-				@Override
 				public void actionPerformed(ActionEvent e) {
-
+						int CategoryID = Integer.valueOf(categoryId.getText());
+						String CategoryName = categoryName.getText();
+						Connection myConn = null;
+						String createCategory = "{call createCategory(?,?,?)}";
+						CallableStatement myStmt = null;
+					try {
+						// Connect to database
+	                	myConn = MyConnection.connect();
+	                    // Prepare the stored procedure call
+	                    myStmt = myConn.prepareCall(createCategory);
+	                    // Set parameter
+	                    myStmt.setInt(1,CategoryID);
+	                    myStmt.setString(2,CategoryName);
+	                    myStmt.registerOutParameter(3,Types.INTEGER);
+	                    myStmt.execute();
+	                   int status = myStmt.getInt(3);
+	                 if (status != 200) {
+	                     throw new SQLCustomException(status);
+	                   }
+	                 else {
+	                	 JOptionPane.showMessageDialog(btnAddButton, "Added Successfully");
+						
+					}
+					 } catch (SQLException ex) {
+	                	 JOptionPane.showMessageDialog(btnAddButton, "Error: "+ex.toString());
+	                   
+					}
 				}
 			});
 			
-			
+	
 			btnUpdateButton.addActionListener(new ActionListener() {
 
 				@Override
@@ -95,10 +130,11 @@ public class CategoryPanel extends JPanel {
 						categoryTable.setFillsViewportHeight(true);
 						categoryTable.setFocusable(false);
 							while(rs.next()) {
-								Category newCategory = new Category();
-								int categoryId = newCategory.getCategoryId(rs.getInt(2));
-								String categoryName = newCategory.getCategoryName(rs.getString(3));
-								categoryModel.addRow(new Object[] {categoryId, categoryName});
+								String CategoryId = String.valueOf(rs.getInt("Cat_Id"));
+								String CategoryName = rs.getString("Cat_Name");
+								String tbData[] = {CategoryId,CategoryName};
+								DefaultTableModel tblModel = (DefaultTableModel)categoryTable.getModel();
+								tblModel.addRow(tbData);
 							}
 							
 					} catch (SQLException e1) {
