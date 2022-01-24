@@ -1,4 +1,4 @@
-import librarymanagement.api.LaunchPage;
+import librarymanagement.gui.LaunchPage;
 
 public class App {
 
