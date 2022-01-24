@@ -1,21 +1,27 @@
 package librarymanagement.gui;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+
+import librarymanagement.database.MyConnection;
+import librarymanagement.resource.Author;
+import librarymanagement.resource.Book;
+import librarymanagement.resource.Borrower;
 
 public class BorrowerPanel extends JPanel {
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private JTextField textField_5;
-	private JTable table;
-
 	/**
 	 * Create the panel.
 	 */
@@ -76,16 +82,6 @@ public class BorrowerPanel extends JPanel {
 		add(issuedByTF);
 		issuedByTF.setColumns(10);
 		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(244, 36, 349, 294);
-		add(scrollPane);
-		Object[][] data= {};
-		String col[] = {"Borrower Number","Book Id", "Borrowed From", "Borrowed To", "Return Date", "Issued By"
-		};
-		
-		JTable borrowerTable = new JTable(data, col);
-		borrowerTable.setBounds(244, 36, 349, 294);
-		scrollPane.setViewportView(borrowerTable);
 		
 		JButton btnAddButton = new JButton("Add");
 		btnAddButton.setBounds(77, 362, 85, 21);
@@ -99,5 +95,76 @@ public class BorrowerPanel extends JPanel {
 		btnDeleteButton.setBounds(230, 362, 85, 21);
 		add(btnDeleteButton);
 
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(244, 36, 349, 294);
+		add(scrollPane);
+
+		String col[] = {"Borrower Number","Book Id", "Borrowed From", "Borrowed To", "Return Date", "Issued By"
+		};
+		
+		JTable borrowerTable = new JTable();
+		scrollPane.setViewportView(borrowerTable);
+		DefaultTableModel borrowerModel = new DefaultTableModel();
+		borrowerTable.setModel(borrowerModel);
+		borrowerModel.setColumnIdentifiers(col);
+		
+		
+		btnAddButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+			}
+			
+		});
+		
+		
+		btnUpdateButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Connection connect = MyConnection.connect();
+					String sql = "SELECT * FROM BORROWER"; 
+					//Create connection to Database
+
+					Statement stmt =  connect.createStatement(); 
+
+				//Executing query
+
+					ResultSet rs = stmt.executeQuery(sql);
+                    
+
+                    //Setting up table auto-resizable.
+					borrowerTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+					borrowerTable.setFillsViewportHeight(true);
+					borrowerTable.setFocusable(false);
+						while(rs.next()) {
+							Borrower newBorrower = new Borrower();
+							int borrowerId = newBorrower.getborrowerId(rs.getInt(2));
+							int bookId = newBorrower.getBookId(rs.getInt(3));
+							Date borrowedFrom = newBorrower.getBorrowedFrom(rs.getDate(4));
+							Date borrowedTo = newBorrower.getBorrowedTo(rs.getDate(5));
+							Date returnedDate = newBorrower.getReturnedDate(rs.getDate(6));
+							int issuedBy = newBorrower.getIssuedBy(rs.getInt(7));
+							borrowerModel.addRow(new Object[] {borrowerId, bookId, borrowedFrom, borrowedTo, returnedDate, issuedBy});
+						}
+						
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+			
+		});
+		
+		btnDeleteButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+			}
+			
+		});
 	}
 }

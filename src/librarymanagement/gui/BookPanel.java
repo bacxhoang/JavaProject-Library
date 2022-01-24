@@ -2,29 +2,30 @@ package librarymanagement.gui;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import librarymanagement.resource.Book;
+import librarymanagement.database.*;
 
 import javax.swing.JTable;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JScrollPane;
 
 public class BookPanel extends JPanel {
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private JTextField textField_5;
-	private JTextField textField_6;
 	private JTable table;
-
+	private JTable table_1;
 	/**
 	 * Create the panel.
 	 */
@@ -103,31 +104,50 @@ public class BookPanel extends JPanel {
 		add(btnUpdateButton);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(244, 36, 349, 294);
+		scrollPane.setBounds(278, 36, 306, 290);
 		add(scrollPane);
-		Object[][] data= {};
-		String col[] = {"ISBN", "Title", "Book Language", "AuthorId", "CategoryId", "Number of Actual", "Number of Current"
-		};
 		
-		JTable bookTable = new JTable(data, col);
-		bookTable.setBounds(244, 36, 349, 294);
+		JTable bookTable = new JTable();
 		scrollPane.setViewportView(bookTable);
 		
+		String[] col = {"ISBN", "Title", "Book Language", "AuthorId", "CategoryId", "Number of Actual", "Number of Current"
+		};
+		DefaultTableModel bookModel = new DefaultTableModel();
 
+		bookModel.setColumnIdentifiers(col);
+		bookTable.setModel(bookModel);
 		
 		
 		btnAddButton.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-			Book newBook = null;
-			newBook.getAuthorId();
-			newBook.getCategoryId();
-			newBook.getClass();
-			newBook.getIsbn();
-			newBook.getLanguage();
-			newBook.getNoCopyActual();
-			newBook.getTitle();
+			
+			String isbn = isbnTF.getText();
+			String title = titleTF.getText();
+			String bookLang = bookLangTF.getText();
+			String authorid = authorIdTF.getText();
+			String categoryid = categoryIdTF.getText();
+			String noofactual= noactualTF.getText();
+			String noofcurrent = nocurrentlTF.getText();
+			
+			if (isbn.isEmpty() ) {
+                JOptionPane.showMessageDialog(null, "Please enter isbn"); //Display dialog box with the message
+			}	else if (title.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Please enter title"); //Display dialog box with the message
+            }	else if (bookLang.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Please enter Language");
+			}	else if (authorid.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Please enter author id");
+			}	else if (categoryid.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Please enter category id");
+			}	else if (noofactual.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Please enter number of book actual");
+			}	else if (noofcurrent.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Please enter number of book curret");
+			}	else {
+
+			}
 			}
 		});
 		
@@ -136,7 +156,39 @@ public class BookPanel extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+
+				try {
+					Connection connect = MyConnection.connect();
+					String sql = "SELECT * FROM BOOK"; 
+					//Create connection to Database
+
+					Statement stmt =  connect.createStatement(); 
+
+				//Executing query
+
+					ResultSet rs = stmt.executeQuery(sql);
+                    
+
+                    //Setting up table auto-resizable.
+                    bookTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+                    bookTable.setFillsViewportHeight(true);
+                    bookTable.setFocusable(false);
+						while(rs.next()) {
+							Book newBook = new Book();
+							int Isbn = newBook.getIsbn(rs.getInt(2));
+							String Title = newBook.getTitle(rs.getString(3));
+							String language = newBook.getLanguage(rs.getString(4));
+							int authorId = newBook.getAuthorId(rs.getInt(5));
+							int categoryId = newBook.getCategoryId(rs.getInt(6));
+							int noCopyActual = newBook.getNoCopyActual(rs.getInt(7));
+							int noCopyCurrent = newBook.getNoCopyCurrent(rs.getInt(8));
+							bookModel.addRow(new Object[] {Isbn, Title, language, authorId, categoryId, noCopyActual, noCopyCurrent });
+						}
+						
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 			
 		});

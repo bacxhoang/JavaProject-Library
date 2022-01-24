@@ -11,7 +11,7 @@ public class Borrower {
 	private Date returnedDate;
 	private int issuedBy;
 	
-	public Borrower() {
+	public Borrower(int borrowerId,int bookId,Date borrowedFrom,Date borrowedTo,Date returnedDate,int issuedBy) {
 		this.borrowerId = borrowerId;
 		this.bookId = bookId;
 		this.borrowedFrom = borrowedFrom;
@@ -20,27 +20,27 @@ public class Borrower {
 		this.issuedBy = issuedBy;
 	}
 	
-	public int getborrowerId(int borrowerId) {
+	public int getborrowerId() {
 		return borrowerId;
 	}
 
-	public int getBookId(int bookId) {
+	public int getBookId() {
 		return bookId;
 	}
 
-	public Date getBorrowedFrom(Date borrowedFrom) {
+	public Date getBorrowedFrom() {
 		return borrowedFrom;
 	}
 
-	public Date getBorrowedTo(Date borrowedTo) {
+	public Date getBorrowedTo() {
 		return borrowedTo;
 	}
 
-	public Date getReturnedDate(Date returnedDate) {
+	public Date getReturnedDate() {
 		return returnedDate;
 	}
 
-	public int getIssuedBy(int issuedBy) {
+	public int getIssuedBy() {
 		return issuedBy;
 	}
 }

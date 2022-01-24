@@ -6,26 +6,26 @@ public class Student{
 	private int borrowerId;
 	private int phoneNumber;
 
-	public Student() {
+	public Student(int studentId, String studentName, int borrowerId,int phoneNumber) {
 		this.studentId = studentId;
 		this.studentName = studentName;
 		this.borrowerId = borrowerId;
 		this.phoneNumber = phoneNumber;
 	}
 
-	public int getStudentId(int studentId) {
+	public int getStudentId() {
 		return studentId;
 	}
 
-	public String getStudentName(String studentName) {
+	public String getStudentName() {
 		return studentName;
 	}
 
-	public int getBorrowerId(int borrowerId) {
+	public int getBorrowerId() {
 		return borrowerId;
 	}
 
-	public int getPhoneNumber(int phoneNumber) {
+	public int getPhoneNumber() {
 		return phoneNumber;
 	}
 	

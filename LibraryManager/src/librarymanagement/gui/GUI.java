@@ -1,38 +1,29 @@
 package librarymanagement.gui;
 
 import java.awt.EventQueue;
-import java.sql.Connection;
-import java.sql.DriverManager;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
-import librarymanagement.database.MyConnection;
-
 import javax.swing.JTabbedPane;
 
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 
-
-
-
 public class GUI extends JFrame {
 
 	private JPanel contentPane;
+	private JTable table;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-
 		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
 				try {
-					System.out.println("Connecting");
 					GUI frame = new GUI();
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -47,7 +38,7 @@ public class GUI extends JFrame {
 	 */
 	public GUI() {
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		setBounds(100, 100, 702, 585);
+		setBounds(100, 100, 772, 583);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -55,7 +46,7 @@ public class GUI extends JFrame {
 		
 		
 		JTabbedPane tabbedPane = new JTabbedPane(SwingConstants.TOP);
-		tabbedPane.setBounds(5, 5, 641, 465);
+		tabbedPane.setBounds(5, 5, 642, 531);
 		contentPane.add(tabbedPane);
 		
 		BookPanel bookPane = new BookPanel();

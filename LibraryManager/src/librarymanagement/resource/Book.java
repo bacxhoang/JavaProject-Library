@@ -9,7 +9,7 @@ public class Book{
 	private int noCopyActual;
 	private int noCopyCurrent;
 	
-	public Book() {
+	public Book(int isbn,String title,String language,int authorId,int categoryId, int noCopyActual, int noCopyCurrent) {
 		this.isbn = isbn;
 		this.title = title;
 		this.language = language;
@@ -18,25 +18,25 @@ public class Book{
 		this.noCopyActual = noCopyActual;
 		this.noCopyCurrent = noCopyCurrent;
 	}
-	public int getIsbn(int isbn){
+	public int getIsbn(){
 		return isbn;
 		}
-	public String getTitle(String title) {
+	public String getTitle() {
 		return title;
 	}
-	public String getLanguage(String language) {
+	public String getLanguage() {
 		return language;
 	}
-	public int getAuthorId(int authorId) {
+	public int getAuthorId() {
 		return authorId;
 	}
-	public int getCategoryId(int categoryId) {
+	public int getCategoryId() {
 		return categoryId;
 	}
-	public int getNoCopyActual(int noCopyActual) {
+	public int getNoCopyActual() {
 		return noCopyActual;
 	}
-	public int getNoCopyCurrent(int noCopyCurrent) {
+	public int getNoCopyCurrent() {
 		return noCopyCurrent;
 	}
 
