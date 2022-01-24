@@ -148,6 +148,7 @@ public class StudentPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
+					studentModel.setRowCount(0);
 					Connection connect = MyConnection.connect();
 					String sql = "SELECT * FROM STUDENT"; 
 					//Create connection to Database

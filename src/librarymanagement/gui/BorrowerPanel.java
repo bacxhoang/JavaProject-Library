@@ -164,6 +164,7 @@ public class BorrowerPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
+					borrowerModel.setRowCount(0);
 					Connection connect = MyConnection.connect();
 					String sql = "SELECT * FROM BORROWER"; 
 					//Create connection to Database

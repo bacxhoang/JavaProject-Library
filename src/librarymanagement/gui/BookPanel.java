@@ -12,6 +12,8 @@ import javax.swing.JTable;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
@@ -186,6 +188,7 @@ public class BookPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 
 				try {
+					bookModel.setRowCount(0);
 					Connection connect = MyConnection.connect();
 					String sql = "SELECT * FROM BOOK"; 
 					//Create connection to Database
@@ -221,6 +224,25 @@ public class BookPanel extends JPanel {
 				}
 			}
 			
+		});
+		
+		bookTable.addMouseListener(new MouseAdapter() {
+			private void JTableMouseClicked() {
+				// TODO Auto-generated method stub
+
+			}
+			@Override
+			public void mouseClicked(MouseEvent evt) {
+				int selectedRowIndex = bookTable.getSelectedRow();
+				
+				isbn.setText(bookModel.getValueAt(selectedRowIndex, 0).toString());
+				title.setText(bookModel.getValueAt(selectedRowIndex, 1).toString());
+				bookLang.setText(bookModel.getValueAt(selectedRowIndex, 2).toString());
+				authorId.setText(bookModel.getValueAt(selectedRowIndex, 3).toString());
+				categoryId.setText(bookModel.getValueAt(selectedRowIndex, 4).toString());
+				noactual.setText(bookModel.getValueAt(selectedRowIndex, 5).toString());
+				nocurrent.setText(bookModel.getValueAt(selectedRowIndex, 6).toString());
+			}
 		});
 	}
 }

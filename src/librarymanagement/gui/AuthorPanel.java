@@ -119,6 +119,7 @@ public class AuthorPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
+					authorModel.setRowCount(0);
 					Connection connect = MyConnection.connect();
 					String sql = "SELECT * FROM AUTHOR"; 
 					//Create connection to Database

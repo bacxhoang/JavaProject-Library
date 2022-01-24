@@ -114,6 +114,7 @@ public class CategoryPanel extends JPanel {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					try {
+						categoryModel.setRowCount(0);
 						Connection connect = MyConnection.connect();
 						String sql = "SELECT * FROM CATEGORY"; 
 						//Create connection to Database
