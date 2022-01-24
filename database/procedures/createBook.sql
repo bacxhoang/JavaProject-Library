@@ -21,6 +21,10 @@ BEGIN CASE
 		SET statusCode = 460; -- invalid input
     WHEN inTitle IS NULL THEN
 		SET statusCode = 460; -- invalid input
+	WHEN inAuthorId IS NULL AND inAuthorId NOT IN (SELECT Author_Id FROM Author) THEN
+		SET statusCode = 460; -- invalid input
+	When inCategoryId IS NULL AND inCategoryId NOT IN (SELECT Cat_Id FROM Category) THEN
+		SET statusCode = 460; -- invalid input
     WHEN inISBN IN (SELECT ISBN FROM Book) THEN
 		SET statusCode = 412; -- ISBN already exists
 	ELSE

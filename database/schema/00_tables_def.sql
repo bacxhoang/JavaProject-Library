@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS Borrower (
     Book_Id INT NOT NULL,
     Borrowed_from DATE NOT NULL,
     Borrowed_to DATE NOT NULL,
-    Returned_date DATE DEFAULT NULL,
+    Returned_date DATE DEFAULT '0000-00-00',
     Issued_by INT NOT NULL,
     
     PRIMARY KEY (Borrower_PK),

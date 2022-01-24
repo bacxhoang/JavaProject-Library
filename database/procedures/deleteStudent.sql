@@ -14,7 +14,7 @@ BEGIN CASE
   ) THEN
   SET
     statusCode = 406; -- NON-EXISTENT/INVALID Student Id
-  WHEN (SELECT DISTINCT Returned_Date FROM Borrower  INNER JOIN Student  ON Borrower_Num = Student_PK WHERE Student_Id = inStudentId IS NULL) IS NULL THEN
+  WHEN (SELECT DISTINCT Borrower_Num FROM Borrower INNER JOIN Student ON Borrower_Num = Student_PK WHERE Student_Id = inStudentId) IS NOT NULL THEN
   SET statusCode = 495; -- DELETE VIOLATION
     ELSE
   SET statusCode = 200; -- SUCCESS
