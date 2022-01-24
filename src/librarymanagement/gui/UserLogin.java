@@ -1,9 +1,12 @@
+
 package librarymanagement.gui;
+
 
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import java.sql.PreparedStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -17,10 +20,13 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.JOptionPane;
+
 
 import librarymanagement.resource.Staff;
 import librarymanagement.database.MyConnection;
-import javax.swing.JOptionPane;
+
+
 
 public class UserLogin{
 	private JFrame UserLogin;
@@ -33,6 +39,7 @@ public class UserLogin{
 	private JLabel lblUsername;
 	private JLabel  lblPassword;
 	
+
 	
 	public void setVisible(boolean b) {
 		UserLogin.setVisible(true);
@@ -51,6 +58,7 @@ public class UserLogin{
         UserLogin.setContentPane(contentPane);
         contentPane.setLayout(null);
 
+
         lblUserLogin = new JLabel("Staff Login");
         lblUserLogin.setFont(new Font("Times New Roman", Font.PLAIN, 42));
         lblUserLogin.setBounds(421, 53, 237, 50);
@@ -62,10 +70,12 @@ public class UserLogin{
         contentPane.add(username);
         username.setColumns(10);
 
+
         lblUsername = new JLabel("Username");
         lblUsername.setFont(new Font("Tahoma", Font.PLAIN, 20));
         lblUsername.setBounds(290, 196, 99, 29);
         contentPane.add(lblUsername);
+
 
         lblPassword = new JLabel("Password");
         lblPassword.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -90,9 +100,11 @@ public class UserLogin{
         
         btnLoginButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                Staff staff = new Staff(0, null, null);
+
+        Staff staff = new Staff(0, null, null);
 				staff.setUsername(username.getText());
 				staff.setPassword(String.valueOf(passwordField.getPassword()));
+
 				Connection myConn = null;
 				PreparedStatement myStmt = null;
 				ResultSet rs = null;

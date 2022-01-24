@@ -3,9 +3,11 @@ package librarymanagement.gui;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Types;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -15,9 +17,11 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+
 import librarymanagement.database.MyConnection;
 import librarymanagement.database.SQLCustomException;
 import librarymanagement.resource.Staff;
+
 
 import java.sql.CallableStatement;
 
@@ -29,11 +33,11 @@ public class UserRegistration{
     private JPasswordField passwordField;
     private JButton RegisterButton;
     private JButton BackButton;
-    private JLabel lblNewUserRegister;
+   private JLabel lblNewUserRegister;
     private JLabel lblstaffId;
     private JLabel lblUsername;
     private JLabel lblPassword;
-    
+
 	public void setVisible(boolean b) {
 		UserRegistration.setVisible(true);
 		
@@ -53,11 +57,13 @@ public class UserRegistration{
         contentPane.setLayout(null);
 
         lblNewUserRegister = new JLabel("Staff Register");
+
         lblNewUserRegister.setFont(new Font("Times New Roman", Font.PLAIN, 42));
         lblNewUserRegister.setBounds(400, 53, 237, 50);
         contentPane.add(lblNewUserRegister);
 
         lblstaffId = new JLabel("Staff\r\n ID");
+
         lblstaffId.setFont(new Font("Tahoma", Font.PLAIN, 20));
         lblstaffId.setBounds(582, 159, 99, 29);
         contentPane.add(lblstaffId);
@@ -75,12 +81,16 @@ public class UserRegistration{
         contentPane.add(username);
         username.setColumns(10);
 
+
         lblUsername = new JLabel("Username");
+
         lblUsername.setFont(new Font("Tahoma", Font.PLAIN, 20));
         lblUsername.setBounds(58, 159, 99, 29);
         contentPane.add(lblUsername);
 
+
         lblPassword = new JLabel("Password");
+
         lblPassword.setFont(new Font("Tahoma", Font.PLAIN, 20));
         lblPassword.setBounds(58, 245, 99, 29);
         contentPane.add(lblPassword);
@@ -105,10 +115,12 @@ public class UserRegistration{
         
         RegisterButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+
                 Staff staff = new Staff(0, null, null);
 				staff.setStaffId(Integer.valueOf(staffId.getText()));
                 staff.setUsername(username.getText());
                 staff.setPassword(String.valueOf(passwordField.getPassword()));
+
 				Connection myConn = null;
 				String register = "{call Register(?,?,?,?)}";
 				CallableStatement myStmt = null;
@@ -120,6 +132,7 @@ public class UserRegistration{
 
                  try {
                 	 // Connect to database
+
                 	myConn = MyConnection.connect();
                     // Prepare the stored procedure call
                     myStmt = myConn.prepareCall(register);
@@ -127,6 +140,7 @@ public class UserRegistration{
                     myStmt.setInt(1,staff.getStaffId());
                     myStmt.setString(2,staff.getUsername());
                     myStmt.setString(3,staff.getPassword());
+
                     myStmt.registerOutParameter(4,Types.INTEGER);
                     myStmt.execute();
                    int status = myStmt.getInt(4);

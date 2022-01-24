@@ -83,8 +83,6 @@ public void setVisible(boolean b) {
 	
 }
 
-
-	
 }
 
 
