@@ -24,6 +24,7 @@ import librarymanagement.database.MyConnection;
 import librarymanagement.database.SQLCustomException;
 import librarymanagement.resource.Category;
 
+//Category GUI
 public class CategoryPanel extends JPanel {
 	/**
 	 * 
@@ -90,6 +91,7 @@ public class CategoryPanel extends JPanel {
 			categoryModel.setColumnIdentifiers(col);
 			categoryTable.setModel(categoryModel);
 			
+			//function for Add Button
 			btnAddButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 						Category category = new Category(0, null);
@@ -123,7 +125,7 @@ public class CategoryPanel extends JPanel {
 				}
 			});
 			
-	
+			//function for Update Button
 			btnUpdateButton.addActionListener(new ActionListener() {
 
 				@Override
@@ -169,6 +171,7 @@ public class CategoryPanel extends JPanel {
 				}
 				
 			});
+			// auto-fill the textField whenever you click on a table row
 			categoryTable.addMouseListener(new MouseAdapter() {
 		
 				@Override

@@ -23,6 +23,7 @@ import javax.swing.table.DefaultTableModel;
 import librarymanagement.database.*;
 import librarymanagement.resource.Borrower;
 
+//Borrower GUI
 public class BorrowerPanel extends JPanel {
 	/**
 	 * 
@@ -151,7 +152,7 @@ public class BorrowerPanel extends JPanel {
 		
 		borrowerModel.setColumnIdentifiers(col);
 		
-		
+		// function for Add Button
 		btnAddButton.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
@@ -193,7 +194,7 @@ public class BorrowerPanel extends JPanel {
 			
 		});
 		
-		
+		//function for Update Button
 		btnUpdateButton.addActionListener(new ActionListener() {
 
 			@Override
@@ -244,7 +245,7 @@ public class BorrowerPanel extends JPanel {
 			}
 			
 		});
-		
+		//function for Delete Button
 		btnDeleteButton.addActionListener(new ActionListener() {
 
 			@Override
@@ -283,6 +284,7 @@ public class BorrowerPanel extends JPanel {
 			}
 			
 		});
+		// function for Return Button
 		btnReturnButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -325,6 +327,7 @@ public class BorrowerPanel extends JPanel {
 				}
 			
 		});
+		// auto-fill the textField whenever you click on a table row
 		borrowerTable.addMouseListener(new MouseAdapter() {
 	
 			@Override

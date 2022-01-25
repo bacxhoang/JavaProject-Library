@@ -22,6 +22,8 @@ import java.sql.Types;
 
 import librarymanagement.database.*;
 import librarymanagement.resource.Book;
+
+//Book GUI
 public class BookPanel extends JPanel {
 	
 	/**
@@ -146,7 +148,7 @@ public class BookPanel extends JPanel {
 		bookModel.setColumnIdentifiers(col);
 		bookTable.setModel(bookModel);
 		
-		
+		// function for Add Button
 		btnAddButton.addActionListener(new ActionListener() {
 			
 			@Override
@@ -192,7 +194,7 @@ public class BookPanel extends JPanel {
 			}
 		});
 		
-		
+		//function for Update Button
 		btnUpdateButton.addActionListener(new ActionListener() {
 
 			@Override
@@ -243,6 +245,7 @@ public class BookPanel extends JPanel {
 			
 		});
 		
+		// auto-fill the textField whenever you click on a table row
 		bookTable.addMouseListener(new MouseAdapter() {
 		
 			@Override

@@ -25,7 +25,7 @@ import java.sql.Types;
 import librarymanagement.database.MyConnection;
 import librarymanagement.database.SQLCustomException;
 import librarymanagement.resource.Author;
-
+// Author GUI
 public class AuthorPanel extends JPanel {
 
 	/**
@@ -41,7 +41,6 @@ public class AuthorPanel extends JPanel {
 	private JScrollPane scrollPane;
 	private JTable authorTable;
 	private DefaultTableModel authorModel;
-	
 	public AuthorPanel() {
 		setLayout(null);
 
@@ -95,7 +94,7 @@ public class AuthorPanel extends JPanel {
 		authorTable.setModel(authorModel);
 
 
-		
+		// fuction for Add Button
 		btnAddButton.addActionListener(new ActionListener() {
 			
 			@Override
@@ -133,7 +132,7 @@ public class AuthorPanel extends JPanel {
 			}
 		});
 		
-		
+		//function for Update Button
 		btnUpdateButton.addActionListener(new ActionListener() {
 
 			@Override
@@ -180,6 +179,7 @@ public class AuthorPanel extends JPanel {
 			}
 			
 		});
+		// auto-fill the textField whenever you click on a table row
 		authorTable.addMouseListener(new MouseAdapter() {
 			
 			@Override

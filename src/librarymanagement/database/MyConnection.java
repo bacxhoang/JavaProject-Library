@@ -10,6 +10,7 @@ public class MyConnection {
         //Making Database Connection once & using multiple times whenenver required.
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
+            // replace "root" with "your mysql username" and "123456" with "your mysql password"
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/librarymanagementsystem?zeroDateTimeBehavior=convertToNull", "root", "123456");
             System.out.println("Connection Successful");
             return con;

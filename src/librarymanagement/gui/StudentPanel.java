@@ -24,6 +24,7 @@ import librarymanagement.database.MyConnection;
 import librarymanagement.database.SQLCustomException;
 import librarymanagement.resource.Student;
 
+//Student GUI
 public class StudentPanel extends JPanel {
 	/**
 	 * 
@@ -119,6 +120,7 @@ public class StudentPanel extends JPanel {
 		studentModel.setColumnIdentifiers(col);
 		studentTable.setModel(studentModel);
 		
+		//function for Add Button
 		btnAddButton.addActionListener(new ActionListener() {
 			
 			@Override
@@ -159,7 +161,7 @@ public class StudentPanel extends JPanel {
 			
 		});
 		
-		
+		//function for Update Button
 		btnUpdateButton.addActionListener(new ActionListener() {
 
 			@Override
@@ -208,7 +210,7 @@ public class StudentPanel extends JPanel {
 			
 			
 		});
-		
+		//function for Delete Button
 		btnDeleteButton.addActionListener(new ActionListener() {
 
 			@Override
@@ -245,6 +247,7 @@ public class StudentPanel extends JPanel {
 			}
 			
 		});
+		// auto-fill the textField whenever you click on a table row
 		studentTable.addMouseListener(new MouseAdapter() {
 	
 			@Override
