@@ -16,3 +16,5 @@
 - This project is conducted as a fulfillment for the course &quot;OOP-Java&quot;, which is instructed by Dr. Tran Hong Ngoc
 
 - The goal of this project is to develop an application to manage(add,search,delete) a Library.
+
+- Please find the UserGuide inside of the docs folder.
